@@ -1,0 +1,331 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "commonToc",
+      "queryScope": "COLLECTION",    
+      "fields": [
+        {
+          "fieldPath": "parent",     
+          "order": "ASCENDING"       
+        },
+        {
+          "fieldPath": "sequence",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "commonToc",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "parent",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "tocSetId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "sequence",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "commonToc",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "parentNode",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "tocSetId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "sequence",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "commonToc",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "tocSetId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "sequence",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "tipitaka",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "proofread",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "tipitakaEdition",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "volumeNumber",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "pageNumber",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "tipitaka",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "tipitakaEdition",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "volumeNumber",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "pageNumber",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "tipitaka",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "tipitakaEdition",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "volumeNumber",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "pageNumber",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "tipitaka",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "volumeNumber",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "note",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "tipitaka",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "volumeNumber",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "pageNumber",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "tipitaka",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "volumeNumber",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "tipitakaEdition",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "wordlist",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "pageNumber",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "tipitakaEdition",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "volumeNumber",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "lineNumber",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "wordlist",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "pageNumber",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "tipitakaEdition",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "volumeNumber",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "wordIndex",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "wordlist",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "pageNumber",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "tipitakaEdition",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "volumeNumber",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "wordNumber",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "wordlist",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "pageNumber",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "tipitakaEdition",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "volumeNumber",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "wordNumber",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "wordlist",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "tipitakaEdition",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "volumeNumber",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "pageNumber",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "wordlist",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "tipitakaEdition",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "wordIndex",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "wordlist",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "tipitakaEdition",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "wordIndex",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "wordlist",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "tipitakaRecordId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "wordIndex",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "wordlist",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "volumeNumber",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "wordIndex",
+          "order": "ASCENDING"
+        }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}

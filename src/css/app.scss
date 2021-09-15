@@ -1,0 +1,15 @@
+// app global css in Sass form
+@import url('https://fonts.googleapis.com/css2?family=Sarabun:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
+
+* {
+  font-family: 'Sarabun', sans-serif;
+}
+
+div.card-dialog-500 {
+  width: 500px;
+  margin: 0 auto;
+}
+
+div.card-dialog-max {
+  width: 100vw;
+}

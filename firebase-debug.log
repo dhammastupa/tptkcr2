@@ -1,0 +1,17 @@
+[debug] [2021-09-14T01:11:47.551Z] ----------------------------------------------------------------------
+[debug] [2021-09-14T01:11:47.553Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\conta\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy
+[debug] [2021-09-14T01:11:47.553Z] CLI Version:   9.18.0
+[debug] [2021-09-14T01:11:47.553Z] Platform:      win32
+[debug] [2021-09-14T01:11:47.554Z] Node Version:  v14.16.1
+[debug] [2021-09-14T01:11:47.554Z] Time:          Tue Sep 14 2021 08:11:47 GMT+0700 (Indochina Time)
+[debug] [2021-09-14T01:11:47.554Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2021-09-14T01:11:47.597Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2021-09-14T01:11:47.597Z] > authorizing via signed-in user (dhammastupa@gmail.com)
+[debug] [2021-09-14T01:11:47.597Z] [iam] checking project tptkcr for permissions ["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","datastore.indexes.create","datastore.indexes.delete","datastore.indexes.list","datastore.indexes.update","firebase.projects.get","firebasehosting.sites.update","firebaserules.releases.create","firebaserules.releases.update","firebaserules.rulesets.create"]
+[debug] [2021-09-14T01:11:47.599Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2021-09-14T01:11:47.599Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2021-09-14T01:11:47.822Z] <<< HTTP RESPONSE 200 {"expires":"Mon, 01 Jan 1990 00:00:00 GMT","cache-control":"no-cache, no-store, max-age=0, must-revalidate","date":"Tue, 14 Sep 2021 01:11:48 GMT","pragma":"no-cache","content-type":"application/json; charset=utf-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","server":"scaffolding on HTTPServer2","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2021-09-14T01:11:47.851Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/tptkcr:testIamPermissions  
+ {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","datastore.indexes.create","datastore.indexes.delete","datastore.indexes.list","datastore.indexes.update","firebase.projects.get","firebasehosting.sites.update","firebaserules.releases.create","firebaserules.releases.update","firebaserules.rulesets.create"]}
