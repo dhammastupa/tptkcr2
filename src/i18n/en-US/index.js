@@ -115,7 +115,8 @@ export default {
     replceImage: 'Replace Image',
     uploadImage: 'Upload Image',
     createNewPage: 'Create a new page number',
-    allPagesCreated: 'All pages have been created'
+    allPagesCreated: 'All pages have been created',
+    ruler: 'Ruler'
   },
   pageCommonToc: {
     createNode: 'Create',

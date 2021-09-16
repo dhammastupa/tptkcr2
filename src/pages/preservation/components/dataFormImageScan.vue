@@ -72,7 +72,7 @@
 <script>
 import { useStore } from 'vuex'
 import { ref, computed } from 'vue'
-import QFirebaseUploader from 'src/pages/Preservation/Components/firebaseUploader.vue'
+import QFirebaseUploader from 'src/pages/preservation/components/firebaseUploader.vue'
 
 export default {
   components: {

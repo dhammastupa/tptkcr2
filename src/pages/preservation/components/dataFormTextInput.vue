@@ -24,7 +24,7 @@
         </q-btn>
         <!-- proofread -->
         <q-toggle
-          v-if="hasPermission('tipitaka-proofread')"
+          v-if="useHasPermission('tipitaka-proofread')"
           v-model="proofreadRef"
           checked-icon="check"
           color="red"
@@ -37,7 +37,7 @@
         </q-toggle>
         <!-- delete record -->
         <q-btn
-          v-if="hasPermission('tipitaka-deleteAction')"
+          v-if="useHasPermission('tipitaka-deleteAction')"
           flat round
           icon="delete"
           color="red"
@@ -106,6 +106,7 @@
 <script>
 import _ from 'lodash'
 import { useStore } from 'vuex'
+import useHasPermission from 'src/hooks/has-permission.js'
 import { db, storage, Timestamp } from 'src/boot/firebase.js'
 import { updateDoc, deleteDoc } from 'src/functions/manage-data.js'
 import { ref, computed, watch } from 'vue'
@@ -252,13 +253,6 @@ export default {
         firstLine.value = form.value.editor.firstLine.initial
         lineHeight.value = form.value.editor.lineHeight.initial
       }
-    }
-
-    // --------------------------
-    // functions check permission
-    // --------------------------
-    function hasPermission (rqPermission) {
-      return $store.dispatch('auth/hasPermission', rqPermission)
     }
 
     // --------------------
@@ -506,7 +500,7 @@ export default {
       proofreadRef,
       // function
       highlighter,
-      hasPermission,
+      useHasPermission,
       removeExtraSpace,
       proofread,
       deleteRecord,

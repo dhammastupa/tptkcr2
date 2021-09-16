@@ -1,76 +1,65 @@
 <template>
-  <div ref="draggableContainer" id="draggable-container">
-    <div
-      id="draggable-header"
-      @mousedown="dragMouseDown"
-      :style="{width: (screenWidth-120)+'px'}"
-    >
-      <slot name="header"></slot>
-    </div>
-    <slot name="main"></slot>
+  <div v-if="rulerActive"
+    v-draggable="{
+      axis: 'y',
+      positionOffset: {x: 20, y: 300}
+    }"
+    :style="{
+      'position': 'absolute',
+      'z-index': '999',
+      'width': screenWidth
+    }"
+  >
+    <q-card class="my-ruler">
+      <q-card-section
+        class="bg-positive"
+        style="opacity: 0.8"
+        >
+      </q-card-section>
+
+      <q-separator />
+
+      <q-card-section>
+        <q-range
+          v-model="range"
+          :min="0"
+          :max="100"
+          drag-range
+          color="green"
+        />
+      </q-card-section>
+    </q-card>
   </div>
 </template>
 
 <script>
+import { ref } from 'vue'
+
 export default {
   name: 'rulerBar',
 
-  data: function () {
+  props: [
+    'rulerActive'
+  ],
+
+  setup () {
+    // init vars
+    const range = ref({
+      min: 25,
+      max: 75
+    })
+    const screenWidth = `${screen.width - (screen.width * 0.05)}px`
+
     return {
-      screenWidth: 100,
-      positions: {
-        clientX: 0,
-        clientY: 0,
-        movementX: 0,
-        movementY: 0
-      }
-    }
-  },
-  created () {
-    this.screenWidth = screen.width
-  },
-  methods: {
-    dragMouseDown: function (event) {
-      event.preventDefault()
-      // get the mouse cursor position at startup:
-      this.positions.clientX = event.clientX
-      this.positions.clientY = event.clientY
-      document.onmousemove = this.elementDrag
-      document.onmouseup = this.closeDragElement
-    },
-    elementDrag: function (event) {
-      event.preventDefault()
-      this.positions.movementX = this.positions.clientX - event.clientX
-      this.positions.movementY = this.positions.clientY - event.clientY
-      this.positions.clientX = event.clientX
-      this.positions.clientY = event.clientY
-      // set the element's new position:
-      this.$refs.draggableContainer.style.top = (this.$refs.draggableContainer.offsetTop - this.positions.movementY) + 'px'
-      this.$refs.draggableContainer.style.left = (this.$refs.draggableContainer.offsetLeft - this.positions.movementX) + 'px'
-    },
-    closeDragElement () {
-      document.onmouseup = null
-      document.onmousemove = null
+      range,
+      screenWidth
     }
   }
 }
 </script>
 
 <style scoped>
-#draggable-container {
-  position: absolute;
-  background: white;
-  text-align: center;
-  opacity: 0.4;
-  cursor: pointer;
-  z-index: 9;
-  margin: auto;
-  border: 1px solid grey;
-  padding: 10px;
-  top: 300px;
-  left: 40px;
-}
-#draggable-header {
-  z-index: 10;
-}
+  .my-ruler {
+    background: transparent;
+  }
 </style>

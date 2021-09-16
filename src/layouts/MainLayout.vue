@@ -64,7 +64,7 @@ export default {
 
 <style>
 table.q-table th {
-  background-color: gold;
+  background-color: #d1c4e9 !important;
   font-weight: bold;
 }
 </style>>

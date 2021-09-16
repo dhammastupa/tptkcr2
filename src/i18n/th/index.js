@@ -115,7 +115,8 @@ export default {
     replceImage: 'เปลี่ยนภาพ',
     uploadImage: 'อัปโหลดไฟล์ภาพ',
     createNewPage: 'สร้างหน้าใหม่หมายเลข',
-    allPagesCreated: 'ทำการสร้างครบทุกหน้าแล้ว'
+    allPagesCreated: 'ทำการสร้างครบทุกหน้าแล้ว',
+    ruler: 'ไม้บรรทัด'
   },
   pageCommonToc: {
     createNode: 'สร้าง',

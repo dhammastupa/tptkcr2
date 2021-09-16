@@ -7,31 +7,24 @@
       transition-hide="slide-right"
     >
       <q-card>
+        <!------------>
         <!-- header -->
+        <!------------>
         <form-header></form-header>
 
+        <q-separator />
+
+        <!----------->
         <!-- ruler -->
+        <!----------->
         <ruler-bar
-          v-if="form.ruler.active"
-        >
-          <template v-slot:header>
-            <q-icon name="touch_app" style="font-size: 2em;"/>
-          </template>
-          <template v-slot:main >
-            <q-range
-              v-model="range"
-              :min="0"
-              :max="100"
-              drag-range
-            />
-          </template>
-        </ruler-bar>
+          :rulerActive="form.ruler.active"
+        ></ruler-bar>
 
         <!---------------------->
         <!-- form -------------->
         <!---------------------->
         <q-card-section>
-
           <!-- form -->
           <q-form
             ref="formRef"
@@ -66,6 +59,7 @@
         <q-card-section>
           {{ $t('system.updatedOn') }} : {{ $filters.timeStampToDate(datatable.selectedRow.updatedOn) }}
         </q-card-section>
+
       </q-card>
     </q-dialog>
   </div>
@@ -80,26 +74,20 @@ export default {
 
   components: {
     FormHeader: defineAsyncComponent(() => import(
-      'src/pages/Preservation/Components/dataFormHeader.vue')),
-    rulerBar: defineAsyncComponent(() => import(
-      'src/pages/Preservation/Components/dataFormRulerBar.vue')),
+      'src/pages/preservation/components/dataFormHeader.vue')),
     infoBar: defineAsyncComponent(() => import(
-      'src/pages/Preservation/Components/dataFormInfoBar.vue')),
+      'src/pages/preservation/components/dataFormInfoBar.vue')),
+    rulerBar: defineAsyncComponent(() => import(
+      'src/pages/preservation/components/dataFormRulerBar.vue')),
     imageScan: defineAsyncComponent(() => import(
-      'src/pages/Preservation/Components/dataFormImageScan.vue')),
+      'src/pages/preservation/components/dataFormImageScan.vue')),
     textInput: defineAsyncComponent(() => import(
-      'src/pages/Preservation/Components/dataFormTextInput.vue'))
+      'src/pages/preservation/components/dataFormTextInput.vue'))
   },
 
   setup () {
     // composable
     const $store = useStore()
-
-    // init vars
-    const range = ref({
-      min: 25,
-      max: 75
-    })
 
     // getters datatable
     const datatable = computed(() => { return $store.getters['preservation/getDatatable'] })
@@ -114,7 +102,6 @@ export default {
 
     return {
       splitterModel,
-      range,
       form,
       datatable,
       hasPermission
@@ -122,3 +109,6 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+</style>

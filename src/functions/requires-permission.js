@@ -1,7 +1,7 @@
 import store from 'src/store'
 import _ from 'lodash'
 
-const n = 3
+const n = 5
 let i = 0
 export function requiresPermission (requirePermission, to, next) {
   function keepTrying () {
