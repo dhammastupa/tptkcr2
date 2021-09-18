@@ -1,34 +1,31 @@
 <template>
-  <div v-if="rulerActive"
-    v-draggable="{
-      axis: 'y',
-      positionOffset: {x: 20, y: 300}
-    }"
-    :style="{
-      'position': 'absolute',
-      'z-index': '999',
-      'width': screenWidth
-    }"
+  <div
+    v-if="rulerActive"
+    class="row"
   >
-    <q-card class="my-ruler">
-      <q-card-section
-        class="bg-positive"
-        style="opacity: 0.8"
-        >
-      </q-card-section>
+    <div
+      v-draggable="{
+        axis: 'y',
+        positionOffset: {x: 0, y: 300}
+      }"
+      class="col-12 z-top absolute"
+    >
+      <q-card class="my-ruler no-barder no-box-shadow">
+        <Draggable>
+          <q-btn round color="green" icon="open_with" />
+        </Draggable>
 
-      <q-separator />
-
-      <q-card-section>
-        <q-range
-          v-model="range"
-          :min="0"
-          :max="100"
-          drag-range
-          color="green"
-        />
-      </q-card-section>
-    </q-card>
+        <div>
+          <q-range
+            v-model="range"
+            :min="0"
+            :max="100"
+            drag-range
+            color="green"
+          />
+        </div>
+      </q-card>
+    </div>
   </div>
 </template>
 
@@ -45,8 +42,8 @@ export default {
   setup () {
     // init vars
     const range = ref({
-      min: 25,
-      max: 75
+      min: 54,
+      max: 56
     })
     const screenWidth = `${screen.width - (screen.width * 0.05)}px`
 

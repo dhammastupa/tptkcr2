@@ -72,30 +72,33 @@ export default {
     // proofread
     const proofreadRef = ref(selectedRow.value.proofread) // proofread field
 
-    // getters variables
-    const variables = computed(() => { return $store.getters['preservation/getVariables'] })
-
     // -------------
     // buttom status
     // -------------
     // previous btn
     const previousPage = computed(() => {
+      let result = false
+      const firstList = _.head(datatable.value.querySnapshot)
       if (datatable.value.selectedRow) {
-        if (datatable.value.selectedRow.pageNumber > 1) {
-          return false
+        if (datatable.value.selectedRow.id === firstList.id) {
+          result = true
         }
       }
-      return true
+      return result
     })
 
     // next btn
     const nextPage = computed(() => {
+      let result = false
+      const lastList = _.last(datatable.value.querySnapshot)
       if (datatable.value.selectedRow) {
-        if (datatable.value.selectedRow.pageNumber < variables.value.totalPages) {
-          return false
+        if (datatable.value.selectedRow.id === lastList.id) {
+          // console.log(lastList.id)
+          // console.log(datatable.value.selectedRow.id)
+          result = true
         }
       }
-      return true
+      return result
     })
 
     function previousDoc () {

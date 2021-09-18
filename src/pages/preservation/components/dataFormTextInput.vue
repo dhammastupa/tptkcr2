@@ -67,6 +67,7 @@
     <!-- first line control -->
     <q-slider
       v-model="firstLine"
+      @change="val => { firstLine = val }"
       :min="form.editor.firstLine.min"
       :max="form.editor.firstLine.max"
       :step="form.editor.firstLine.step"
@@ -81,7 +82,7 @@
       class="editor"
       :style="style"
       :highlight="highlighter"
-      line-numbers
+      :line-numbers="true"
       :readonly="proofreadRef"
     >
     </prism-editor>
@@ -89,6 +90,7 @@
     <!-- line height -->
     <q-slider
       v-model="lineHeight"
+      @change="val => { lineHeight = val }"
       :min="form.editor.lineHeight.min"
       :max="form.editor.lineHeight.max"
       :step="form.editor.lineHeight.step"
@@ -168,6 +170,7 @@ export default {
     // watch slider firstLine / lineHeight change
     watch(firstLine, function () {
       updateData()
+      softSubmit()
     })
     watch(lineHeight, function () {
       // change line height for line number
@@ -176,6 +179,7 @@ export default {
         all[i].style['line-height'] = lineHeight.value + 'px'
       }
       updateData()
+      softSubmit()
     })
 
     // -----------------------------------
@@ -482,6 +486,17 @@ export default {
         })
     }
 
+    // --------------------
+    // function softSubmit data
+    // --------------------
+    async function softSubmit () {
+      const data = datatable.value.updateData
+      const doc = db.collection('tipitaka').doc(data.id)
+      await updateDoc(doc, {
+        personalSetting: data.personalSetting
+      })
+    }
+
     // ------
     // return
     // ------
@@ -510,7 +525,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style>
   /* required class */
   .editor-night {
     /* we dont use `language-` classes anymore so thats why we need to add background and text color manually */
@@ -522,10 +537,21 @@ export default {
     /* we dont use `language-` classes anymore so thats why we need to add background and text color manually */
     background: white;
     color: black;
+    /* letter-spacing: 1px; */
+    word-spacing: 1em;
   }
 
   /* optional class for removing the outline */
+  .prism-editor__textarea {
+    width: 999px !important;
+  }
   .prism-editor__textarea:focus {
     outline: none;
+  }
+  .prism-editor__editor {
+    white-space: pre !important;
+  }
+  .prism-editor__container {
+    overflow-x: scroll !important;
   }
 </style>

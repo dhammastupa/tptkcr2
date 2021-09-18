@@ -3,7 +3,6 @@ import { useStore } from 'vuex'
 import { includes } from 'lodash'
 
 export default function useHasPermission (requirePermission) {
-  console.log(requirePermission)
   const $store = useStore()
 
   const authPermission = computed(() => {
