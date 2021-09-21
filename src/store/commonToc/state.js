@@ -11,7 +11,7 @@ export default function () {
       volume: {},
       page: {},
       imageUrl: '',
-      wordlist: [],
+      wordList: [],
       selectWord: {},
       selectWordRange: []
     },

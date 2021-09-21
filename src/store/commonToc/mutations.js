@@ -47,8 +47,8 @@ export const setPage = (state, payload) => {
   state.variables.page = payload
 }
 
-export const setWordlist = (state, payload) => {
-  state.variables.wordlist = payload
+export const setWordList = (state, payload) => {
+  state.variables.wordList = payload
 }
 
 export const setImageUrl = (state, payload) => {

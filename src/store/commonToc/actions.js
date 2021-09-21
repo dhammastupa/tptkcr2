@@ -32,7 +32,7 @@ export async function fetchTipitakaEdition ({ state, commit, dispatch }, payload
 export function fetchTipitaka ({ state, commit, dispatch }, payload) {
   function clearStateValue () {
     commit('setPage', {})
-    commit('setWordlist', [])
+    commit('setWordList', [])
     commit('setImageUrl', '')
   }
   try {
@@ -44,7 +44,7 @@ export function fetchTipitaka ({ state, commit, dispatch }, payload) {
     ).then(data => {
       if (!isEmpty(data)) {
         commit('setPage', data[0])
-        dispatch('fetchWordlist', data[0].id)
+        dispatch('fetchWordList', data[0].id)
         dispatch('fetchImageUrl', data[0].id)
       } else {
         clearStateValue()
@@ -55,16 +55,16 @@ export function fetchTipitaka ({ state, commit, dispatch }, payload) {
   }
 }
 
-export function fetchWordlist ({ state, commit }, payload) {
+export function fetchWordList ({ state, commit }, payload) {
   getDocs(
-    db.collection('wordlist')
+    db.collection('wordList')
       .where('tipitakaRecordId', '==', payload)
       .orderBy('wordIndex')
   ).then(data => {
     if (!isEmpty(data)) {
-      commit('setWordlist', data)
+      commit('setWordList', data)
     } else {
-      commit('setWordlist', [])
+      commit('setWordList', [])
     }
   })
 }

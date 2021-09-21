@@ -4,7 +4,7 @@
     <!-- view by mode -->
     <!-- //////////// -->
     <div v-if="pageFinderMenu.viewMode === 'imageScan' ||
-      pageFinderMenu.viewMode === 'imageWordlist'"
+      pageFinderMenu.viewMode === 'imageWordList'"
     >
       <!-- query info -->
       <div v-if="variables.tipitakaEdition.name" class="text-h6 text-center">
@@ -36,7 +36,7 @@
       </div>
 
       <!-- view mode: wordRange -->
-      <div v-if="pageFinderMenu.viewMode ==='imageWordlist'">
+      <div v-if="pageFinderMenu.viewMode ==='imageWordList'">
         <div v-if="!isEmpty(variables.selectWordRange)" class="text-center">
           {{ $t('pageCommonToc.wordRange') }}:
             <li
@@ -66,13 +66,13 @@
           />
         </div>
 
-        <!-- view mode: wordlist -->
+        <!-- view mode: wordList -->
         <div class="fit row wrap justify-center items-start content-start">
-          <div v-if="!isEmpty(variables.wordlist)">
+          <div v-if="!isEmpty(variables.wordList)">
             <ol>
               <li v-for="l in lastLine" :key="l">
                 <q-btn
-                  v-for="w in filter(variables.wordlist, { 'lineNumber': l })"
+                  v-for="w in filter(variables.wordList, { 'lineNumber': l })"
                   :key="w.wordIndex"
                   :id="w.wordIndex"
                   :label="w.word"
@@ -95,8 +95,8 @@
       </div>
     </div>
 
-    <!-- view mode: tocWordlist -->
-    <div v-if="pageFinderMenu.viewMode ==='tocWordlist'">
+    <!-- view mode: tocWordList -->
+    <div v-if="pageFinderMenu.viewMode ==='tocWordList'">
 
     </div>
   </q-page>
@@ -155,8 +155,8 @@ export default {
     // get last line in page
     const lastLine = computed(() => {
       let result = 1
-      if (!isEmpty(variables.value.wordlist)) {
-        result = last(variables.value.wordlist).lineNumber
+      if (!isEmpty(variables.value.wordList)) {
+        result = last(variables.value.wordList).lineNumber
       }
       return result
     })
@@ -166,7 +166,7 @@ export default {
     const selectWordRange = ref([])
 
     function onSelectWord (id) {
-      selectWord.value = find(variables.value.wordlist, ['id', id])
+      selectWord.value = find(variables.value.wordList, ['id', id])
       $store.commit('commonToc/setSelectWord', selectWord.value)
 
       // process

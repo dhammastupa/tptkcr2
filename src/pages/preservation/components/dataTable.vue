@@ -59,7 +59,7 @@
 import { reactive, computed, watch } from 'vue'
 import { useStore } from 'vuex'
 import { db } from 'src/boot/firebase.js'
-import { useLiveData, getPromiseDocs, getDoc, updateDoc } from 'src/functions/manage-data.js'
+import { useLiveData } from 'src/functions/manage-data.js'
 import { useI18n } from 'vue-i18n'
 import useHasPermission from 'src/hooks/has-permission.js'
 // import { isEmpty, without, split, join } from 'lodash'
@@ -211,81 +211,68 @@ export default {
       // -----------------
       // get all proofread
       // -----------------
-      const proofreadDoc = await getPromiseDocs(
-        db.collection('tipitaka')
-          .where('tipitakaEdition', '==', variables.value.tipitakaEdition.code)
-          .where('volumeNumber', '==', variables.value.volume)
-          .where('proofread', '==', true)
-      )
-      // log 1
-      console.log('1: get all proofread in volume', proofreadDoc.length, 'docs')
-
-      proofreadDoc.forEach(async doc => {
-        // -----------------
-        // get tipitaka page
-        // -----------------
-        const tipitakaPage = await getDoc(
-          db.collection('tipitaka'), doc.id
-        )
-        // log 2
-        console.log('2: get tipitaka page')
-
-        // ----------
-        // clean text
-        // ----------
-        const textTrimmed = tipitakaPage.text.replace(/^\s*$(?:\r\n?|\n)/gm, '')
-        const splitLines = without(split(textTrimmed, '\n'), '')
-        const removeExtraSpaceArray = []
-        splitLines.forEach(eachLine => {
-          removeExtraSpaceArray.push(eachLine.replace(/\s+/g, ' ').trim())
-        })
-        const text = join(removeExtraSpaceArray, '\n')
-        await updateDoc(db.collection('tipitaka').doc(doc.id), { text: text })
-        // log 3
-        console.log('5: clean text & update')
-
-        // ------------
-        // add wordlist
-        // ------------
-        const batch2 = db.batch()
-        const lines = text.split('\n')
-        let lineNumber = 0
-        let wordNumber = 0
-        lines.forEach(line => {
-          lineNumber++
-          const words = line.split(' ')
-          words.forEach(word => {
-            wordNumber++
-            const newDoc = db.collection('wordlist').doc()
-            batch2.set(
-              db.collection('wordlist').doc(newDoc.id), {
-                id: newDoc.id,
-                word: word,
-                lineNumber: lineNumber,
-                wordNumber: wordNumber,
-                // reference
-                tipitakaReference: db.collection('tipitaka').doc(`${doc.id}`),
-                tipitakaRecordId: doc.id,
-                tipitakaEdition: variables.value.tipitakaEdition.code,
-                volumeNumber: variables.value.volume,
-                pageNumber: doc.pageNumber,
-                imageReference: doc.imageReference,
-                wordIndex: `${variables.value.tipitakaEdition.code}-${pad(variables.value.volume, 3)}-${pad(doc.pageNumber, 4)}-${pad(wordNumber, 3)}`
-              }
-            )
+      db.collection('tipitaka')
+        .where('tipitakaEdition', '==', variables.value.tipitakaEdition.code)
+        .where('volumeNumber', '==', variables.value.volume)
+        .where('proofread', '==', true)
+        .get()
+        .then((querySnapshot) => {
+          // log
+          console.log('1: get all proofread')
+          querySnapshot.forEach((doc) => {
+            const textTrimmed = doc.data().text.replace(/^\s*$(?:\r\n?|\n)/gm, '')
+            const splitLines = without(split(textTrimmed, '\n'), '')
+            const removeExtraSpaceArray = []
+            splitLines.forEach(eachLine => {
+              removeExtraSpaceArray.push(eachLine.replace(/\s+/g, ' ').trim())
+            })
+            const text = join(removeExtraSpaceArray, '\n')
+            db.collection('tipitaka').doc(doc.id)
+              .update({ text: text })
+              .then(() => {
+                // log
+                console.log('2: update text')
+                const lines = text.split('\n')
+                let lineNumber = 0
+                let wordNumber = 0
+                lines.forEach(line => {
+                  lineNumber++
+                  const words = line.split(' ')
+                  const batch2 = db.batch()
+                  words.forEach(word => {
+                    wordNumber++
+                    const newDoc = db.collection('wordList').doc()
+                    batch2.set(
+                      db.collection('wordList').doc(newDoc.id), {
+                        id: newDoc.id,
+                        word: word,
+                        lineNumber: lineNumber,
+                        wordNumber: wordNumber,
+                        // reference
+                        tipitakaReference: db.collection('tipitaka').doc(`${doc.id}`),
+                        tipitakaRecordId: doc.id,
+                        tipitakaEdition: variables.value.tipitakaEdition.code,
+                        volumeNumber: variables.value.volume,
+                        pageNumber: doc.data().pageNumber,
+                        imageReference: doc.data().imageReference,
+                        wordIndex: `${variables.value.tipitakaEdition.code}-${pad(variables.value.volume, 3)}-${pad(doc.data().pageNumber, 4)}-${pad(wordNumber, 3)}`
+                      }
+                    )
+                  })
+                  batch2.commit().then(() => {
+                    // log 3
+                    console.log('3: commited fixed wordList')
+                  })
+                })
+              })
           })
         })
-        await batch2.commit().then(() => {
-          // log 4
-          console.log('4: commited fixed wordlist')
-        })
-      })
     }
 
     // async function dataRepairServicesBackup () {
     //   while (true) {
     //     const emptyWord = await getPromiseDocs(
-    //       db.collection('wordlist')
+    //       db.collection('wordList')
     //         .where('tipitakaEdition', '==', variables.value.tipitakaEdition.code)
     //         // .where('volumeNumber', '==', variables.value.volume)
     //         .where('word', '==', '')
@@ -297,21 +284,21 @@ export default {
     //       const tipitakaRecordId = emptyWord[0].tipitakaRecordId
     //       const pageNumber = emptyWord[0].pageNumber
     //       const imageReference = emptyWord[0].imageReference
-    //       // remove wordlist
-    //       const removeWordlist = await getPromiseDocs(
-    //         db.collection('wordlist')
+    //       // remove wordList
+    //       const removeWordList = await getPromiseDocs(
+    //         db.collection('wordList')
     //           .where('tipitakaRecordId', '==', tipitakaRecordId)
     //       )
     //       // log
-    //       console.log('2: get wordlist to delete')
+    //       console.log('2: get wordList to delete')
     //       const batch1 = db.batch()
-    //       removeWordlist.forEach((doc) => {
-    //         batch1.delete(db.collection('wordlist').doc(doc.id))
+    //       removeWordList.forEach((doc) => {
+    //         batch1.delete(db.collection('wordList').doc(doc.id))
     //       })
     //       await batch1.commit().then(() => {
     //         // ---
     //         // log
-    //         console.log('3: commit remove wordlist')
+    //         console.log('3: commit remove wordList')
     //         // ---
     //       })
     //       const tipitakaPage = await getDoc(
@@ -333,7 +320,7 @@ export default {
     //       // log
     //       console.log('5: update clean text')
     //       // ---
-    //       // add wordlist
+    //       // add wordList
     //       const batch2 = db.batch()
     //       const lines = text.split('\n')
     //       let lineNumber = 0
@@ -343,9 +330,9 @@ export default {
     //         const words = line.split(' ')
     //         words.forEach(word => {
     //           wordNumber++
-    //           const newDoc = db.collection('wordlist').doc()
+    //           const newDoc = db.collection('wordList').doc()
     //           batch2.set(
-    //             db.collection('wordlist').doc(newDoc.id), {
+    //             db.collection('wordList').doc(newDoc.id), {
     //               id: newDoc.id,
     //               word: word,
     //               lineNumber: lineNumber,
@@ -365,7 +352,7 @@ export default {
     //       await batch2.commit().then(() => {
     //         // ---
     //         // log
-    //         console.log('6: commited fixed wordlist')
+    //         console.log('6: commited fixed wordList')
     //         // ---
     //       })
     //     } else {

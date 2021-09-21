@@ -281,7 +281,7 @@ export default {
     }
 
     // -----------------------------------------
-    // function proofread create/delete wordlist
+    // function proofread create/delete wordList
     // -----------------------------------------
     function proofread (value, evt) {
       removeExtraSpace()
@@ -301,9 +301,9 @@ export default {
         }
       }).onOk(() => {
         if (value) {
-          createWordlist()
+          createWordList()
         } else {
-          removeWordlist()
+          removeWordList()
         }
         submit()
       }).onOk(() => {
@@ -314,10 +314,10 @@ export default {
     }
 
     // ------------------------
-    // function create Wordlist
+    // function create WordList
     // ------------------------
-    function createWordlist () {
-      console.log('createWordlist')
+    function createWordList () {
+      console.log('createWordList')
       if (textRef.value) {
         const batch = db.batch()
         const lines = textRef.value.split('\n')
@@ -328,9 +328,9 @@ export default {
           const words = line.split(' ')
           words.forEach(word => {
             wordNumber++
-            const newDoc = db.collection('wordlist').doc()
+            const newDoc = db.collection('wordList').doc()
             batch.set(
-              db.collection('wordlist').doc(newDoc.id), {
+              db.collection('wordList').doc(newDoc.id), {
                 id: newDoc.id,
                 word: word,
                 lineNumber: lineNumber,
@@ -354,17 +354,17 @@ export default {
     }
 
     // ------------------------
-    // function remove Wordlist
+    // function remove WordList
     // ------------------------
-    function removeWordlist () {
-      console.log('removeWordlist')
+    function removeWordList () {
+      console.log('removeWordList')
       const batch = db.batch()
-      db.collection('wordlist')
+      db.collection('wordList')
         .where('tipitakaRecordId', '==', selectedRow.value.id)
         .get()
         .then(docs => {
           docs.forEach((doc) => {
-            batch.delete(db.collection('wordlist').doc(doc.id))
+            batch.delete(db.collection('wordList').doc(doc.id))
           })
           batch.commit().then(() => {
             console.log('commited')

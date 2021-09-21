@@ -9,8 +9,8 @@
         toggle-color="purple"
         :options="[
           {value: 'imageScan', slot: 'imageScan',},
-          {value: 'imageWordlist', slot: 'imageWordlist'},
-          {value: 'tocWordlist', slot: 'tocWordlist'}
+          {value: 'imageWordList', slot: 'imageWordList'},
+          {value: 'tocWordList', slot: 'tocWordList'}
         ]"
       >
         <template v-slot:imageScan>
@@ -19,15 +19,15 @@
           </div>
           <q-icon name="auto_stories"></q-icon>
         </template>
-        <template v-slot:imageWordlist>
+        <template v-slot:imageWordList>
           <div class="text-center q-anchor--skip">
-            <q-tooltip>{{ $t('pageCommonToc.imageWordlist') }}</q-tooltip>
+            <q-tooltip>{{ $t('pageCommonToc.imageWordList') }}</q-tooltip>
           </div>
           <q-icon name="chrome_reader_mode"></q-icon>
         </template>
-        <template v-slot:tocWordlist>
+        <template v-slot:tocWordList>
           <div class="text-center q-anchor--skip">
-            <q-tooltip>{{ $t('pageCommonToc.tocWordlist') }}</q-tooltip>
+            <q-tooltip>{{ $t('pageCommonToc.tocWordList') }}</q-tooltip>
           </div>
           <q-icon name="account_tree"></q-icon>
         </template>
