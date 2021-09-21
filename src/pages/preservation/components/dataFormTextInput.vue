@@ -270,19 +270,21 @@ export default {
     // function remove extra space
     // ---------------------------
     function removeExtraSpace () {
-      const splitLines = _.split(textRef.value, '\n')
+      const textTrimmed = textRef.value.replace(/^\s*$(?:\r\n?|\n)/gm, '')
+      const splitLines = _.without(_.split(textTrimmed, '\n'), '')
       const removeExtraSpaceArray = []
       splitLines.forEach(eachLine => {
         removeExtraSpaceArray.push(eachLine.replace(/\s+/g, ' ').trim())
       })
       textRef.value = _.join(removeExtraSpaceArray, '\n')
+      console.log()
     }
 
     // -----------------------------------------
     // function proofread create/delete wordlist
     // -----------------------------------------
     function proofread (value, evt) {
-      console.log('proofread', value)
+      removeExtraSpace()
       $q.dialog({
         title: $t('system.confirm'),
         message: proofreadRef.value ? $t('pageTipitakaPreservation.confirmToCreateWrodlist') : $t('pageTipitakaPreservation.confirmToRemoveWrodlist'),
@@ -531,6 +533,7 @@ export default {
     /* we dont use `language-` classes anymore so thats why we need to add background and text color manually */
     background: #2d2d2d;
     color: #ccc;
+    word-spacing: 1em;
   }
 
   .editor {
@@ -544,12 +547,15 @@ export default {
   /* optional class for removing the outline */
   .prism-editor__textarea {
     width: 999px !important;
+    word-spacing: 1em;
   }
   .prism-editor__textarea:focus {
     outline: none;
+    word-spacing: 1em;
   }
   .prism-editor__editor {
     white-space: pre !important;
+    word-spacing: 1em;
   }
   .prism-editor__container {
     overflow-x: scroll !important;

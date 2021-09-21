@@ -23,7 +23,7 @@ export function createProfileMenu ({ rootState, commit }) {
       icon: 'face',
       label: rootState.auth.authInfo.email,
       caption: dateFormattedString,
-      to: '/my-account/profile',
+      to: '/users/profile',
       class: 'text-white bg-deep-purple-6',
       loggedIn: true,
       userEmailVerified: true,

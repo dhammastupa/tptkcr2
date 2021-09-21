@@ -57,7 +57,8 @@ export default {
     accessControl: 'Access Control',
     user: 'User',
     group: 'Group',
-    permission: 'Permission'
+    permission: 'Permission',
+    profile: 'User Profile'
 
   },
   pageLogin: {
@@ -69,6 +70,12 @@ export default {
     notValidEmail: 'Please enter a valid email address.',
     atLeast6Char: 'Please enter at least 6 characters.',
     userName: 'User Name'
+  },
+  pageProfile: {
+    firstName: 'First Name',
+    lastName: 'Last Name',
+    group: 'Group',
+    permission: 'Permission'
   },
   pageForgotPassword: {
     pageName: 'Forgot Passord',
@@ -116,7 +123,9 @@ export default {
     uploadImage: 'Upload Image',
     createNewPage: 'Create a new page number',
     allPagesCreated: 'All pages have been created',
-    ruler: 'Ruler'
+    ruler: 'Ruler',
+    dataRepairService: 'Data Repair',
+    createPage: 'Create Page'
   },
   pageCommonToc: {
     createNode: 'Create',

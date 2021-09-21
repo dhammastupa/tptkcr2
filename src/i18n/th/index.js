@@ -58,7 +58,8 @@ export default {
     accessControl: 'ระบบควบคุมสิทธิ์',
     user: 'ผู้ใช้งาน',
     group: 'กลุ่ม',
-    permission: 'สิทธิ์'
+    permission: 'สิทธิ์',
+    profile: 'ข้อมูลผู้ใช้'
   },
   pageLogin: {
     pageName: 'เข้าระบบ',
@@ -69,6 +70,12 @@ export default {
     notValidEmail: 'กรุณาใส่อีเมล์ที่ถูกต้อง',
     atLeast6Char: 'โปรดป้อนอย่างน้อย 6 ตัวอักษร',
     userName: 'ชื่อผู้ใช้'
+  },
+  pageProfile: {
+    firstName: 'ชื่อ',
+    lastName: 'นามสกุล',
+    group: 'กลุ่ม',
+    permission: 'สิทธิ์'
   },
   pageForgotPassword: {
     pageName: 'ลืมรหัสผ่าน',
@@ -116,7 +123,9 @@ export default {
     uploadImage: 'อัปโหลดไฟล์ภาพ',
     createNewPage: 'สร้างหน้าใหม่หมายเลข',
     allPagesCreated: 'ทำการสร้างครบทุกหน้าแล้ว',
-    ruler: 'ไม้บรรทัด'
+    ruler: 'ไม้บรรทัด',
+    dataRepairService: 'ซ่อมแซมข้อมูล',
+    createPage: 'เพิ่มหน้า'
   },
   pageCommonToc: {
     createNode: 'สร้าง',

@@ -9,7 +9,7 @@ const routes = [
     children: [
       {
         path: '',
-        component: () => import('pages/Index.vue')
+        component: () => import('pages/index.vue')
       },
       // login page
       {
@@ -34,14 +34,14 @@ const routes = [
       {
         path: '/preservation/:id',
         name: 'tipitakaPreservation',
-        component: () => import('src/pages/preservation/Index.vue'),
+        component: () => import('src/pages/preservation/index.vue'),
         beforeEnter: (to, from, next) => requiresPermission(['tipitaka'], to, next)
       },
       // table of content
       {
         path: '/common-toc/:id',
         name: 'common-toc',
-        component: () => import('src/pages/commonToc/Index.vue'),
+        component: () => import('src/pages/commonToc/index.vue'),
         beforeEnter: (to, from, next) => requiresPermission(['common-toc'], to, next)
       },
       // configuration
@@ -49,22 +49,29 @@ const routes = [
       {
         path: '/configuration/tipitaka-edition',
         name: 'tipitakaEditionPage',
-        component: () => import('src/pages/configuration/tipitakaEdition/Index.vue'),
+        component: () => import('src/pages/configuration/tipitakaEdition/index.vue'),
         beforeEnter: (to, from, next) => requiresPermission(['configuration'], to, next)
       },
       // tocset
       {
         path: '/configuration/toc-set',
         name: 'tocSet',
-        component: () => import('src/pages/configuration/tocSet/Index.vue'),
+        component: () => import('src/pages/configuration/tocSet/index.vue'),
         beforeEnter: (to, from, next) => requiresPermission(['configuration'], to, next)
       },
       // webContent
       {
         path: '/configuration/web-content',
         name: 'webContent',
-        component: () => import('src/pages/configuration/webContent/Index.vue'),
+        component: () => import('src/pages/configuration/webContent/index.vue'),
         beforeEnter: (to, from, next) => requiresPermission(['configuration'], to, next)
+      },
+      // users
+      // profile
+      {
+        path: '/users/profile',
+        name: 'profile',
+        component: () => import('src/pages/users/profile/index.vue')
       }
     ]
   },
