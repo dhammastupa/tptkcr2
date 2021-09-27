@@ -188,7 +188,7 @@ export function createAccessControlMenu ({ commit }, payload) {
     {
       icon: 'people',
       label: 'mainNavigation.user',
-      to: '/setting/access-control/user',
+      to: '/access-control/user',
       class: 'text-black',
       loggedIn: true,
       userEmailVerified: true,
@@ -197,7 +197,7 @@ export function createAccessControlMenu ({ commit }, payload) {
     {
       icon: 'supervised_user_circle',
       label: 'mainNavigation.group',
-      to: '/setting/access-control/group',
+      to: '/access-control/group',
       class: 'text-black',
       loggedIn: true,
       userEmailVerified: true,
@@ -206,7 +206,7 @@ export function createAccessControlMenu ({ commit }, payload) {
     {
       icon: 'flaky',
       label: 'mainNavigation.permission',
-      to: '/setting/access-control/permission',
+      to: '/access-control/permission',
       class: 'text-black',
       loggedIn: true,
       userEmailVerified: true,

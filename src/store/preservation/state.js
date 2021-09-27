@@ -38,8 +38,8 @@ export default function () {
         },
         lineHeight: {
           initial: 20,
-          min: 1,
-          max: 50,
+          min: 16,
+          max: 60,
           step: 0.5,
           color: 'green'
         }

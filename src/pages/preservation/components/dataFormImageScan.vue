@@ -28,7 +28,7 @@
         <q-tooltip>
           {{ $t('pageTipitakaPreservation.showRuler') }}
         </q-tooltip>
-        </q-btn>
+      </q-btn>
     </div>
 
     <template v-slot:action>
@@ -63,10 +63,24 @@
   </div>
 
   <!-- image scan -->
-  <q-img v-if="datatable.selectedRow.imageReference"
-    :src="form.imageUrl"
-    spinner-color="white"
-  />
+  <div class="q-pa-md">
+    <!-- ขยายภาพ -->
+    <q-slider
+      v-model="imageScale"
+      :min="100" :max="150"
+      :label-value="`${$t('pageTipitakaPreservation.imageScale')}: ${imageScale}%`"
+      label-always
+    />
+
+    <div v-draggable="{axis: 'x'}">
+      <q-img
+        v-if="datatable.selectedRow.imageReference"
+        :src="form.imageUrl"
+        :style="`width: ${imageScale}%`"
+        spinner-color="white"
+      />
+    </div>
+  </div>
 </template>
 
 <script>
@@ -82,6 +96,9 @@ export default {
   setup () {
     // composable
     const $store = useStore()
+
+    // init variables
+    const imageScale = ref(100)
 
     // getters datatable
     const datatable = computed(() => { return $store.getters['preservation/getDatatable'] })
@@ -116,6 +133,7 @@ export default {
 
     return {
       datatable,
+      imageScale,
       form,
       replaceImageRef,
       setRulerActive,

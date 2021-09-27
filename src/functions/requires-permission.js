@@ -16,12 +16,6 @@ export function requiresPermission (requirePermission, to, next) {
         setTimeout(keepTrying, 1000) // try again in 1 seconds
       } else {
         next('/Error403')
-        next({
-          path: '/Error403/',
-          query: {
-            backUrl: to.fullPath
-          }
-        })
       }
     }
   }

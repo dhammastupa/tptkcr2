@@ -72,6 +72,28 @@ const routes = [
         path: '/users/profile',
         name: 'profile',
         component: () => import('src/pages/users/profile/index.vue')
+      },
+      // access-control
+      // user
+      {
+        path: '/access-control/user',
+        name: 'usertable',
+        component: () => import('src/pages/access-control/user/index.vue'),
+        beforeEnter: (to, from, next) => requiresPermission(['accessControl'], to, next)
+      },
+      // group
+      {
+        path: '/access-control/group',
+        name: 'grouptable',
+        component: () => import('src/pages/access-control/group/index.vue'),
+        beforeEnter: (to, from, next) => requiresPermission(['accessControl'], to, next)
+      },
+      // permission
+      {
+        path: '/access-control/permission',
+        name: 'permissiontable',
+        component: () => import('src/pages/access-control/permission/index.vue'),
+        beforeEnter: (to, from, next) => requiresPermission(['accessControl'], to, next)
       }
     ]
   },

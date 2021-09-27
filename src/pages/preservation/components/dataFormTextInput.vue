@@ -1,16 +1,32 @@
 <template>
   <div class="col q-pa-sm">{{$t('pageTipitakaPreservation.text')}}</div>
   <q-banner inline-actions class="bg-grey-3">
-
+    <!--------------->
     <!-- font size -->
+    <!--------------->
     <q-select
       v-model="fontSize" dense
       :options="['14px', '15px', '16px', '17px', '18px']"
-      style="width: 90px;"
-      :label="$t('system.fontSize')" />
+      :label="$t('system.fontSize')"
+      style="width: 100px"
+    />
 
+    <!----------------->
+    <!-- actoin slot -->
+    <!----------------->
     <template v-slot:action>
       <div class="q-gutter">
+        <!-- floatingControl -->
+        <q-btn
+          flat round
+          icon="tune"
+          :color="controlPanel ? 'purple' : 'black'"
+          @click="controlPanel = !controlPanel"
+          >
+          <q-tooltip>
+            {{ $t('pageTipitakaPreservation.lineControlPanel') }}
+          </q-tooltip>
+        </q-btn>
         <!-- remove extra space -->
         <q-btn
           flat round
@@ -63,7 +79,58 @@
     </template>
   </q-banner>
 
-  <div class="q-pa-md q-gutter-sm">
+  <!------------------------>
+  <!-- line control panel -->
+  <!------------------------>
+  <div class="q-pa-md">
+    <div
+      v-if="controlPanel"
+      v-draggable="{ axis: 'y', positionOffset: {x: 45, y: -20} }"
+      style="width:80%"
+      class="z-top absolute"
+    >
+      <q-card>
+        <q-card-section style="cursor: pointer" class="bg-grey-11">
+          <div class="row items-center no-wrap">
+            <div class="col">
+              <div>{{ $t('pageTipitakaPreservation.lineControlPanel') }}</div>
+            </div>
+            <div class="col-auto">
+              <q-btn flat round dense icon="close" @click="controlPanel = !controlPanel" />
+            </div>
+          </div>
+        </q-card-section>
+
+        <q-separator />
+
+        <q-card-section>
+          <!-- first line control -->
+          <q-slider
+            v-model="firstLine"
+            @change="val => { firstLine = val }"
+            :min="form.editor.firstLine.min"
+            :max="form.editor.firstLine.max"
+            :step="form.editor.firstLine.step"
+            :color="form.editor.firstLine.color"
+            :label-value="$t('pageTipitakaPreservation.firstLine') +': ' + firstLine + 'px'"
+            label-always
+          />
+          <!-- line height -->
+          <q-slider
+            v-model="lineHeight"
+            @change="val => { lineHeight = val }"
+            :min="form.editor.lineHeight.min"
+            :max="form.editor.lineHeight.max"
+            :step="form.editor.lineHeight.step"
+            :color="form.editor.lineHeight.color"
+            :label-value="$t('pageTipitakaPreservation.lineSpacing') +': ' + lineHeight + 'px'"
+            label-always
+            class="q-mt-xl"
+          />
+        </q-card-section>
+      </q-card>
+    </div>
+
     <!-- first line control -->
     <q-slider
       v-model="firstLine"
@@ -76,16 +143,41 @@
       label-always
     />
 
-    <!-- editor -->
-    <prism-editor
-      v-model="textRef"
-      class="editor"
-      :style="style"
-      :highlight="highlighter"
-      :line-numbers="true"
-      :readonly="proofreadRef"
+    <q-splitter
+      v-model="splitterModel"
+      unit="px"
     >
-    </prism-editor>
+      <!-- lineNumber -->
+      <template v-slot:before>
+        <ol
+          :style="{
+            fontSize: style.fontSize,
+            lineHeight: style.lineHeight,
+            margin: '0px',
+            paddingTop: style.paddingTop
+          }"
+        >
+          <li v-for="i in lineCount" :key="i" />
+        </ol>
+      </template>
+
+      <!-- editor -->
+      <template v-slot:after>
+        <q-input
+          type="textarea"
+          v-model="textRef"
+          :readonly="proofreadRef"
+          wrap="off" bottom-slots
+          :input-style="style"
+          style="overflow-y: hidden"
+        >
+          <template v-slot:hint>
+            {{ wordCount }}
+            <img style="height: 12px" src="~assets/system-images/buddha-statue.png"/>
+          </template>
+        </q-input>
+      </template>
+    </q-splitter>
 
     <!-- line height -->
     <q-slider
@@ -97,6 +189,7 @@
       :color="form.editor.lineHeight.color"
       :label-value="$t('pageTipitakaPreservation.lineSpacing') +': ' + lineHeight + 'px'"
       label-always
+      class="q-mt-xl"
     />
 
     <!-- note -->
@@ -112,19 +205,12 @@ import useHasPermission from 'src/hooks/has-permission.js'
 import { db, storage, Timestamp } from 'src/boot/firebase.js'
 import { updateDoc, deleteDoc } from 'src/functions/manage-data.js'
 import { ref, computed, watch } from 'vue'
-import { PrismEditor } from 'vue-prism-editor'
-import 'vue-prism-editor/dist/prismeditor.min.css'
-import { highlight, languages } from 'prismjs/components/prism-core'
 import { useQuasar, format } from 'quasar'
 import { useI18n } from 'vue-i18n'
 
 const { pad } = format
 
 export default {
-  components: {
-    PrismEditor
-  },
-
   setup () {
     // ----------
     // composable
@@ -160,24 +246,49 @@ export default {
     const proofreadRef = ref(selectedRow.value.proofread) // proofread field
 
     // --------------
-    // slider control
+    // all control
     // --------------
+    const controlPanel = ref(false)
+    const splitterModel = ref(40) // spliter for show line number start at 150px
     const firstLine = ref(0) // first line ref
-    const lineHeight = ref(0) // line height ref
+    const lineHeight = ref(1) // line height ref
+    const textAreaHeight = computed(() => {
+      return firstLine.value + (_.split(textRef.value, '\n').length * lineHeight.value) + 100
+    })
     const modifyFirstLine = ref(false) // modify firstLine flag ref
     const modifyLineHeight = ref(false) // modify lineHeight flag ref
+    const lineCount = computed(() => {
+      const textTrimmed = textRef.value.replace(/^\s*$(?:\r\n?|\n)/gm, '')
+      const splitLines = _.without(_.split(textTrimmed, '\n'), '')
+      return splitLines.length
+    })
+    const wordCount = computed(() => {
+      let wordCount = 0
+      const textTrimmed = textRef.value.replace(/^\s*$(?:\r\n?|\n)/gm, '')
+      const splitLines = _.without(_.split(textTrimmed, '\n'), '')
+      const removeExtraSpace = []
+      splitLines.forEach(eachLine => {
+        removeExtraSpace.push(eachLine.replace(/\s+/g, ' ').trim())
+      })
+      removeExtraSpace.forEach(eachLine => {
+        wordCount += _.split(eachLine, ' ').length
+      })
+      return `${wordCount} ${$t('pageTipitakaPreservation.words')}`
+    })
 
-    // watch slider firstLine / lineHeight change
+    // ------------------------------
+    // watch slider firstLine change
+    // ------------------------------
     watch(firstLine, function () {
       updateData()
       softSubmit()
     })
+
+    // ------------------------------
+    // watch slider lineHeight change
+    // ------------------------------
     watch(lineHeight, function () {
       // change line height for line number
-      const all = document.getElementsByClassName('prism-editor__line-numbers')
-      for (let i = 0; i < all.length; i++) {
-        all[i].style['line-height'] = lineHeight.value + 'px'
-      }
       updateData()
       softSubmit()
     })
@@ -193,7 +304,6 @@ export default {
     })
     // watch personnel setting ref change
     watch(ps, function () {
-      console.log('ps change')
       setSlider()
     })
 
@@ -209,30 +319,39 @@ export default {
       )
     })
 
-    // -------------
+    // -------------------
     // editor style config
-    // -------------
+    // -------------------
     const style = computed(() => {
       const result = {
         fontSize: form.value.editor.fontSize,
         lineHeight: lineHeight.value + 'px',
         padding: form.value.editor.padding,
         paddingTop: firstLine.value + 'px',
-        paddingBottom: form.value.editor.paddingBottom
+        paddingBottom: form.value.editor.paddingBottom,
+        wordSpacing: '1em',
+        height: textAreaHeight.value + 'px'
       }
       return result
     })
 
+    // -----------
+    // selectedRow
+    // -----------
     watch(selectedRow, function () {
       textRef.value = selectedRow.value.text
       noteRef.value = selectedRow.value.note
       proofreadRef.value = selectedRow.value.proofread
     })
 
+    // ------------------
+    // warch and reactive
+    // ------------------
     watch([textRef, noteRef, proofreadRef], function () {
       updateData()
     })
 
+    // ------------------
     // initial updateData
     // ------------------
     setSlider()
@@ -259,13 +378,6 @@ export default {
       }
     }
 
-    // --------------------
-    // function PrismEditor
-    // --------------------
-    function highlighter (textRef) {
-      return highlight(textRef, languages.plaintext)
-    }
-
     // ---------------------------
     // function remove extra space
     // ---------------------------
@@ -277,7 +389,6 @@ export default {
         removeExtraSpaceArray.push(eachLine.replace(/\s+/g, ' ').trim())
       })
       textRef.value = _.join(removeExtraSpaceArray, '\n')
-      console.log()
     }
 
     // -----------------------------------------
@@ -323,28 +434,38 @@ export default {
         const lines = textRef.value.split('\n')
         let lineNumber = 0
         let wordNumber = 0
+        let reference = []
         lines.forEach(line => {
           lineNumber++
           const words = line.split(' ')
           words.forEach(word => {
-            wordNumber++
             const newDoc = db.collection('wordList').doc()
-            batch.set(
-              db.collection('wordList').doc(newDoc.id), {
-                id: newDoc.id,
-                word: word,
-                lineNumber: lineNumber,
-                wordNumber: wordNumber,
-                // reference
-                tipitakaReference: db.collection('tipitaka').doc(`${selectedRow.value.id}`),
-                tipitakaRecordId: selectedRow.value.id,
-                tipitakaEdition: selectedRow.value.tipitakaEdition,
-                volumeNumber: selectedRow.value.volumeNumber,
-                pageNumber: selectedRow.value.pageNumber,
-                imageReference: selectedRow.value.imageReference,
-                wordIndex: `${selectedRow.value.tipitakaEdition}-${pad(selectedRow.value.volumeNumber, 3)}-${pad(selectedRow.value.pageNumber, 4)}-${pad(wordNumber, 3)}`
-              }
-            )
+            switch (word.charAt(0)) {
+              case ('[' || '๑' || '๒' || '๓' || '๔' || '๕' || '๖' || '๗' || '๘' || '๙' || '๐'):
+                reference.push(word)
+                break
+              default:
+                wordNumber++
+                batch.set(
+                  db.collection('wordList').doc(newDoc.id), {
+                    id: newDoc.id,
+                    word: word,
+                    lineNumber: lineNumber,
+                    wordNumber: wordNumber,
+                    // reference
+                    tipitakaReference: db.collection('tipitaka').doc(`${selectedRow.value.id}`),
+                    tipitakaRecordId: selectedRow.value.id,
+                    tipitakaEdition: selectedRow.value.tipitakaEdition,
+                    volumeNumber: selectedRow.value.volumeNumber,
+                    pageNumber: selectedRow.value.pageNumber,
+                    imageReference: selectedRow.value.imageReference,
+                    wordIndex: `${selectedRow.value.tipitakaEdition}-${pad(selectedRow.value.volumeNumber, 3)}-${pad(selectedRow.value.pageNumber, 4)}-${pad(wordNumber, 3)}`,
+                    reference: reference
+                  }
+                )
+                reference = []
+                break
+            }
           })
         })
         batch.commit().then(() => {
@@ -509,14 +630,18 @@ export default {
       // variable
       ps,
       style,
+      controlPanel,
+      splitterModel,
       firstLine,
+      textAreaHeight,
+      lineCount,
       lineHeight,
+      wordCount,
       fontSize,
       textRef,
       noteRef,
       proofreadRef,
       // function
-      highlighter,
       useHasPermission,
       removeExtraSpace,
       proofread,
@@ -526,38 +651,3 @@ export default {
   }
 }
 </script>
-
-<style>
-  /* required class */
-  .editor-night {
-    /* we dont use `language-` classes anymore so thats why we need to add background and text color manually */
-    background: #2d2d2d;
-    color: #ccc;
-    word-spacing: 1em;
-  }
-
-  .editor {
-    /* we dont use `language-` classes anymore so thats why we need to add background and text color manually */
-    background: white;
-    color: black;
-    /* letter-spacing: 1px; */
-    word-spacing: 1em;
-  }
-
-  /* optional class for removing the outline */
-  .prism-editor__textarea {
-    width: 999px !important;
-    word-spacing: 1em;
-  }
-  .prism-editor__textarea:focus {
-    outline: none;
-    word-spacing: 1em;
-  }
-  .prism-editor__editor {
-    white-space: pre !important;
-    word-spacing: 1em;
-  }
-  .prism-editor__container {
-    overflow-x: scroll !important;
-  }
-</style>

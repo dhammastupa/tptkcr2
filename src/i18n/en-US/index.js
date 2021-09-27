@@ -125,7 +125,10 @@ export default {
     allPagesCreated: 'All pages have been created',
     ruler: 'Ruler',
     dataRepairService: 'Data Repair',
-    createPage: 'Create Page'
+    createPage: 'Create Page',
+    imageScale: 'Scale Image',
+    words: 'Words',
+    lineControlPanel: 'Line Control Panel'
   },
   pageCommonToc: {
     createNode: 'Create',
@@ -169,6 +172,11 @@ export default {
     status: 'Status',
     draft: 'Draft',
     published: 'Published'
+  },
+  pageAccessControl: {
+    email: 'Email',
+    firstName: 'First Name',
+    lastName: 'Last Name'
   },
   failed: 'Action failed',
   success: 'Action was successful'

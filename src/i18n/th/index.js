@@ -125,7 +125,10 @@ export default {
     allPagesCreated: 'ทำการสร้างครบทุกหน้าแล้ว',
     ruler: 'ไม้บรรทัด',
     dataRepairService: 'ซ่อมแซมข้อมูล',
-    createPage: 'เพิ่มหน้า'
+    createPage: 'เพิ่มหน้า',
+    imageScale: 'ขยายภาพ',
+    words: 'คำ',
+    lineControlPanel: 'จัดการบรรทัด'
   },
   pageCommonToc: {
     createNode: 'สร้าง',
@@ -169,6 +172,11 @@ export default {
     status: 'สถานะ',
     draft: 'ฉบับร่าง',
     published: 'ฉบับเผยแพร่'
+  },
+  pageAccessControl: {
+    email: 'อีเมล',
+    firstName: 'ชื่อ',
+    lastName: 'นามสกุล'
   },
   failed: 'Action failed',
   success: 'Action was successful'

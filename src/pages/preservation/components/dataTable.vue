@@ -35,19 +35,6 @@
               </q-tooltip>
             </q-btn>
 
-            <!-- fix empty word -->
-            <q-btn
-              v-if="useHasPermission('utility')"
-              color="purple"
-              text-color="white"
-              round
-              icon="home_repair_service"
-              @click="dataRepairServices"
-            >
-              <q-tooltip>
-                {{ $t('pageTipitakaPreservation.dataRepairService') }}
-              </q-tooltip>
-            </q-btn>
           </template>
         </q-input>
       </template>
@@ -62,11 +49,6 @@ import { db } from 'src/boot/firebase.js'
 import { useLiveData } from 'src/functions/manage-data.js'
 import { useI18n } from 'vue-i18n'
 import useHasPermission from 'src/hooks/has-permission.js'
-// import { isEmpty, without, split, join } from 'lodash'
-import { without, split, join } from 'lodash'
-import { format } from 'quasar'
-
-const { pad } = format
 
 export default {
   name: 'mainNavigation.tipitakaPreservation',
@@ -206,165 +188,6 @@ export default {
       )
     }
 
-    // function dataRepairServices
-    async function dataRepairServices () {
-      // -----------------
-      // get all proofread
-      // -----------------
-      db.collection('tipitaka')
-        .where('tipitakaEdition', '==', variables.value.tipitakaEdition.code)
-        .where('volumeNumber', '==', variables.value.volume)
-        .where('proofread', '==', true)
-        .get()
-        .then((querySnapshot) => {
-          // log
-          console.log('1: get all proofread')
-          querySnapshot.forEach((doc) => {
-            const textTrimmed = doc.data().text.replace(/^\s*$(?:\r\n?|\n)/gm, '')
-            const splitLines = without(split(textTrimmed, '\n'), '')
-            const removeExtraSpaceArray = []
-            splitLines.forEach(eachLine => {
-              removeExtraSpaceArray.push(eachLine.replace(/\s+/g, ' ').trim())
-            })
-            const text = join(removeExtraSpaceArray, '\n')
-            db.collection('tipitaka').doc(doc.id)
-              .update({ text: text })
-              .then(() => {
-                // log
-                console.log('2: update text')
-                const lines = text.split('\n')
-                let lineNumber = 0
-                let wordNumber = 0
-                lines.forEach(line => {
-                  lineNumber++
-                  const words = line.split(' ')
-                  const batch2 = db.batch()
-                  words.forEach(word => {
-                    wordNumber++
-                    const newDoc = db.collection('wordList').doc()
-                    batch2.set(
-                      db.collection('wordList').doc(newDoc.id), {
-                        id: newDoc.id,
-                        word: word,
-                        lineNumber: lineNumber,
-                        wordNumber: wordNumber,
-                        // reference
-                        tipitakaReference: db.collection('tipitaka').doc(`${doc.id}`),
-                        tipitakaRecordId: doc.id,
-                        tipitakaEdition: variables.value.tipitakaEdition.code,
-                        volumeNumber: variables.value.volume,
-                        pageNumber: doc.data().pageNumber,
-                        imageReference: doc.data().imageReference,
-                        wordIndex: `${variables.value.tipitakaEdition.code}-${pad(variables.value.volume, 3)}-${pad(doc.data().pageNumber, 4)}-${pad(wordNumber, 3)}`
-                      }
-                    )
-                  })
-                  batch2.commit().then(() => {
-                    // log 3
-                    console.log('3: commited fixed wordList')
-                  })
-                })
-              })
-          })
-        })
-    }
-
-    // async function dataRepairServicesBackup () {
-    //   while (true) {
-    //     const emptyWord = await getPromiseDocs(
-    //       db.collection('wordList')
-    //         .where('tipitakaEdition', '==', variables.value.tipitakaEdition.code)
-    //         // .where('volumeNumber', '==', variables.value.volume)
-    //         .where('word', '==', '')
-    //         .limit(1)
-    //     )
-    //     if (!isEmpty(emptyWord)) {
-    //       // log
-    //       console.log('1: get empty word record')
-    //       const tipitakaRecordId = emptyWord[0].tipitakaRecordId
-    //       const pageNumber = emptyWord[0].pageNumber
-    //       const imageReference = emptyWord[0].imageReference
-    //       // remove wordList
-    //       const removeWordList = await getPromiseDocs(
-    //         db.collection('wordList')
-    //           .where('tipitakaRecordId', '==', tipitakaRecordId)
-    //       )
-    //       // log
-    //       console.log('2: get wordList to delete')
-    //       const batch1 = db.batch()
-    //       removeWordList.forEach((doc) => {
-    //         batch1.delete(db.collection('wordList').doc(doc.id))
-    //       })
-    //       await batch1.commit().then(() => {
-    //         // ---
-    //         // log
-    //         console.log('3: commit remove wordList')
-    //         // ---
-    //       })
-    //       const tipitakaPage = await getDoc(
-    //         db.collection('tipitaka'), tipitakaRecordId
-    //       )
-    //       // ---
-    //       // log
-    //       console.log('4: get tipitaka page record')
-    //       // ---
-    //       const textTrimmed = tipitakaPage.text.replace(/^\s*$(?:\r\n?|\n)/gm, '')
-    //       const splitLines = without(split(textTrimmed, '\n'), '')
-    //       const removeExtraSpaceArray = []
-    //       splitLines.forEach(eachLine => {
-    //         removeExtraSpaceArray.push(eachLine.replace(/\s+/g, ' ').trim())
-    //       })
-    //       const text = join(removeExtraSpaceArray, '\n')
-    //       await updateDoc(db.collection('tipitaka').doc(tipitakaRecordId), { text: text })
-    //       // ---
-    //       // log
-    //       console.log('5: update clean text')
-    //       // ---
-    //       // add wordList
-    //       const batch2 = db.batch()
-    //       const lines = text.split('\n')
-    //       let lineNumber = 0
-    //       let wordNumber = 0
-    //       lines.forEach(line => {
-    //         lineNumber++
-    //         const words = line.split(' ')
-    //         words.forEach(word => {
-    //           wordNumber++
-    //           const newDoc = db.collection('wordList').doc()
-    //           batch2.set(
-    //             db.collection('wordList').doc(newDoc.id), {
-    //               id: newDoc.id,
-    //               word: word,
-    //               lineNumber: lineNumber,
-    //               wordNumber: wordNumber,
-    //               // reference
-    //               tipitakaReference: db.collection('tipitaka').doc(`${tipitakaRecordId}`),
-    //               tipitakaRecordId: tipitakaRecordId,
-    //               tipitakaEdition: variables.value.tipitakaEdition.code,
-    //               volumeNumber: variables.value.volume,
-    //               pageNumber: pageNumber,
-    //               imageReference: imageReference,
-    //               wordIndex: `${variables.value.tipitakaEdition.code}-${pad(variables.value.volume, 3)}-${pad(pageNumber, 4)}-${pad(wordNumber, 3)}`
-    //             }
-    //           )
-    //         })
-    //       })
-    //       await batch2.commit().then(() => {
-    //         // ---
-    //         // log
-    //         console.log('6: commited fixed wordList')
-    //         // ---
-    //       })
-    //     } else {
-    //       // ---
-    //       // log
-    //       // ---
-    //       console.log('7: finished')
-    //       break
-    //     }
-    //   }
-    // }
-
     // ------
     // return
     // ------
@@ -374,8 +197,7 @@ export default {
       datatable,
       useHasPermission,
       createData,
-      selectedRow,
-      dataRepairServices
+      selectedRow
     }
   }
 }
