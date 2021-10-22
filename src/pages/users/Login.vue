@@ -11,11 +11,14 @@
           </q-card-section>
 
           <div>
-            <q-card-section>
-              <q-form class="q-px-sm q-pt-xl">
+            <q-form
+              class="q-px-sm q-pt-md"
+              @submit="submitForm"
+            >
+              <q-card-section>
                 <q-input
                   ref="emailRef"
-                  square clearable
+                  square
                   v-model="user.email" type="email"
                   lazy-rules
                   :rules="[ val => isValidEmailAddress(val) || $t('pageLogin.notValidEmail')]"
@@ -26,7 +29,7 @@
                 </q-input>
                 <q-input
                   ref="passwordRef"
-                  square clearable
+                  square
                   v-model="user.password" type="password"
                   lazy-rules
                   :rules="[ val => val.length >= 6 || $t('pageLogin.atLeast6Char')]"
@@ -35,28 +38,29 @@
                     <q-icon name="lock" />
                   </template>
                 </q-input>
-              </q-form>
-            </q-card-section>
+              </q-card-section>
 
-            <q-card-actions class="q-px-lg">
-              <q-btn
-                unelevated size="lg"
-                color="purple-4"
-                class="full-width text-white"
-                :label="$t('system.submit')"
-                @click="submitForm"/>
-            </q-card-actions>
-
-            <q-card-section class="text-center q-pa-sm">
-              <p class="text-grey-6">
+              <q-card-actions class="q-px-lg">
                 <q-btn
-                  to="/users/forgot-password"
-                  flat size="sm"
-                  text-color="black"
-                  :label="$t('pageLogin.forgotPassword')" />
-              </p>
-            </q-card-section>
+                  unelevated size="lg"
+                  color="purple-4"
+                  class="full-width text-white"
+                  :label="$t('system.submit')"
+                  type="submit"
+                />
+              </q-card-actions>
 
+              <q-card-section class="text-center q-pa-sm">
+                <p class="text-grey-6">
+                  <q-btn
+                    to="/users/forgot-password"
+                    flat size="sm"
+                    text-color="black"
+                    :label="$t('pageLogin.forgotPassword')"
+                  />
+                </p>
+              </q-card-section>
+            </q-form>
           </div>
 
         </q-card>

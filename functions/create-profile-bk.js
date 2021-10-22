@@ -1,7 +1,7 @@
 const { admin } = require('./admin')
 
-const createProfile = async (data, context) => {
-  const { uid, email, firstName, lastName, inviterUid, inviterCode } = data
+const createProfile = async (userRecord, context) => {
+  const { uid, email } = userRecord
 
   admin.firestore()
     .collection('user')
@@ -9,12 +9,10 @@ const createProfile = async (data, context) => {
     .set({
       uid,
       email,
-      firstName,
-      lastName,
-      inviterUid,
+      firstName: '',
+      lastName: '',
       creationDate: admin.firestore.FieldValue.serverTimestamp()
     })
-    .then(console.log('created'))
     .catch(console.error)
 
   const doc = await admin.firestore().collection('group').doc('staff').get()
@@ -25,13 +23,6 @@ const createProfile = async (data, context) => {
       user: [...doc.data().user, uid]
     })
     .catch(console.error)
-
-  admin.firestore()
-    .collection('user')
-    .doc(inviterUid)
-    .update({
-      invitationIDs: admin.firestore.FieldValue.arrayRemove(inviterCode)
-    })
 }
 
 module.exports = { createProfile }

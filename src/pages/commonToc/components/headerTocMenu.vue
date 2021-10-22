@@ -1,7 +1,9 @@
 <template>
   <q-toolbar
     class="col-3 text-white q-gutter-xs">
+    <!-------------->
     <!-- add node -->
+    <!-------------->
     <q-btn
       flat round dense
       text-color="secondary"
@@ -13,7 +15,9 @@
         {{ $t('pageCommonToc.createNode') }}
       </q-tooltip>
     </q-btn>
+    <!--------------->
     <!-- edit node -->
+    <!--------------->
     <q-btn
       flat round dense
       text-color="primary"
@@ -25,7 +29,9 @@
         {{ $t('pageCommonToc.editNode') }}
       </q-tooltip>
     </q-btn>
+    <!------------>
     <!-- upward -->
+    <!------------>
     <q-btn
       flat round dense
       text-color="deep-purple-9"
@@ -37,7 +43,9 @@
         {{ $t('pageCommonToc.upward') }}
       </q-tooltip>
     </q-btn>
+    <!-------------->
     <!-- downward -->
+    <!-------------->
     <q-btn
       flat round dense
       text-color="deep-purple-9"
@@ -49,7 +57,9 @@
         {{ $t('pageCommonToc.downward') }}
       </q-tooltip>
     </q-btn>
+    <!------------------>
     <!-- changeParent -->
+    <!------------------>
     <q-btn
       flat round dense
       text-color="teal-9"
@@ -61,7 +71,9 @@
         {{ $t('pageCommonToc.changeParent') }}
       </q-tooltip>
     </q-btn>
+    <!-------------->
     <!-- clearAll -->
+    <!-------------->
     <q-btn
       flat round dense
       text-color="grey-1"
@@ -73,7 +85,9 @@
         {{ $t('pageCommonToc.unselectNode') }}
       </q-tooltip>
     </q-btn>
+    <!---------------->
     <!-- deleteNode -->
+    <!---------------->
     <q-btn
       flat round dense
       icon="clear"

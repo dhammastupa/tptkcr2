@@ -22,6 +22,7 @@ export default {
     updatedBy: 'Updated By',
     checkToDelete: 'Check To Delete',
     confirm: 'Confirm',
+    ok: 'OK',
     confirmToDelete: 'Are you sure to delete this record.',
     cancel: 'Cancel',
     update: 'Update',
@@ -43,7 +44,16 @@ export default {
     sinhala: 'Sinhala',
     thai: 'Thai',
     sriLanka: 'Sri Lanka',
-    myanmar: 'Myanmar'
+    myanmar: 'Myanmar',
+    infoTitle: '<span class="text-blue">Info</span>',
+    errorTitle: '<span class="text-red">Error</span>',
+    noRecordFound: 'No Record Found',
+    emailAlreadyInUse: 'The email address is already in use by another account.',
+    sendEmailVerification: 'A verification link has been sent to your email account. Open it up to activate your account.',
+    wrongPassword: 'The password is invalid or the user does not have a password.',
+    userNotFound: 'There is no user record corresponding to this identifier. The user may have been deleted.',
+    sendPasswordResetEmail: 'A password reset link was sent. Click the link in the email to create a new password.',
+    notInvited: 'Inviter information not found.'
   },
   mainNavigation: {
     home: 'Home',
@@ -58,8 +68,9 @@ export default {
     user: 'User',
     group: 'Group',
     permission: 'Permission',
-    profile: 'User Profile'
-
+    profile: 'User Profile',
+    accesscontrolUser: 'User',
+    utility: 'Utility'
   },
   pageLogin: {
     pageName: 'Sign in',
@@ -69,13 +80,20 @@ export default {
     forgotPassword: 'Forgot your password?',
     notValidEmail: 'Please enter a valid email address.',
     atLeast6Char: 'Please enter at least 6 characters.',
-    userName: 'User Name'
+    userName: 'User Name',
+    registration: 'Registration'
   },
   pageProfile: {
     firstName: 'First Name',
     lastName: 'Last Name',
     group: 'Group',
-    permission: 'Permission'
+    permission: 'Permission',
+    invitationLink: 'Invitation Link',
+    volunteer: 'Volunteer',
+    friendList: 'Friend List',
+    createInvitationLink: 'Create Invitation Link',
+    meritBook: 'Merti Book',
+    lastMeritAction: 'Last Merit Action'
   },
   pageForgotPassword: {
     pageName: 'Forgot Passord',
@@ -177,6 +195,15 @@ export default {
     email: 'Email',
     firstName: 'First Name',
     lastName: 'Last Name'
+  },
+  meritBook: {
+    createToc: 'Create Table of Contents',
+    updateRecord: 'Update Record',
+    deleteRecord: 'Delete Record',
+    createWordlist: 'Proofread and Create Pali Word Index',
+    tipitakaEdition: 'Tipitaka Edition',
+    volumeNumber: 'Volume Number',
+    pageNumber: 'Page Number'
   },
   failed: 'Action failed',
   success: 'Action was successful'

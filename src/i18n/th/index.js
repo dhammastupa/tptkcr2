@@ -9,7 +9,7 @@ export default {
     abbrOrg: 'PTF',
     submit: 'บันทึก',
     submitted: 'บันทึกสำเร็จ',
-    success: 'Success',
+    success: 'ดำเนินการสำเร็จ',
     error: 'ดำเนินการไม่สำเร็จ โปรดติดต่อเจ้าหน้าที่',
     reset: 'ตั้งค่าใหม่',
     welcome: 'ยินดีต้อนรับ',
@@ -22,6 +22,7 @@ export default {
     updatedBy: 'ปรับปรุงโดย',
     checkToDelete: 'ต้องการลบรายการ',
     confirm: 'ยืนยัน',
+    ok: 'ตกลง',
     confirmToDelete: 'คุณแน่ใจว่าต้องการลบข้อมูลรายการนี้',
     cancel: 'ยกเลิก',
     update: 'ปรับปรุง',
@@ -43,7 +44,16 @@ export default {
     sinhala: 'สิงหล',
     thai: 'ไทย',
     sriLanka: 'ศรีลังกา',
-    myanmar: 'พม่า'
+    myanmar: 'พม่า',
+    infoTitle: '<span class="text-blue">แจ้งเพื่อทราบ</span>',
+    errorTitle: '<span class="text-red">เกิดข้อผิดพลาด</span>',
+    noRecordFound: 'ไม่พบข้อมูล',
+    emailAlreadyInUse: 'อีเมลนี้ถูกใช้โดยบัญชีผู้ใช้ท่านอื่นแล้ว',
+    sendEmailVerification: 'ระบบได้ทำการส่งลิงก์สำหรับยืนยันไปยังอีเมลของคุณแล้ว กรุณาตรวจสอบและทำการกดลิงก์เพื่อเปิดใช้งานบัญชีผู้ใช้ของคุณ',
+    wrongPassword: 'รหัสผ่านไม่ถูกต้อง',
+    userNotFound: 'ไม่พบบัญชีผู้ใช้ตามที่ระบุ',
+    sendPasswordResetEmail: 'ระบบได้ทำการส่งลิงก์สำหรับเปลี่ยนรหัสผ่าน ไปยังอีเมลของคุณแล้ว กรุณาตรวจสอบและทำการกดลิงก์เพื่อการกำหนดรหัสผ่านใหม่ที่ต้องการ',
+    notInvited: 'ไม่พบรหัสเชิญชวน'
   },
   // pageName
   mainNavigation: {
@@ -59,7 +69,9 @@ export default {
     user: 'ผู้ใช้งาน',
     group: 'กลุ่ม',
     permission: 'สิทธิ์',
-    profile: 'ข้อมูลผู้ใช้'
+    profile: 'ข้อมูลผู้ใช้',
+    accesscontrolUser: 'ผู้ใช้งาน',
+    utility: 'เครื่องมือพิเศษ'
   },
   pageLogin: {
     pageName: 'เข้าระบบ',
@@ -69,13 +81,20 @@ export default {
     forgotPassword: 'ลืมรหัสผ่าน?',
     notValidEmail: 'กรุณาใส่อีเมล์ที่ถูกต้อง',
     atLeast6Char: 'โปรดป้อนอย่างน้อย 6 ตัวอักษร',
-    userName: 'ชื่อผู้ใช้'
+    userName: 'ชื่อผู้ใช้',
+    registration: 'ลงทะเบียน'
   },
   pageProfile: {
     firstName: 'ชื่อ',
     lastName: 'นามสกุล',
     group: 'กลุ่ม',
-    permission: 'สิทธิ์'
+    permission: 'สิทธิ์',
+    volunteer: 'เพื่อนอาสา',
+    friendList: 'รายชื่อเพื่อนอาสา',
+    invitationLink: 'ลิงค์เชิญเพื่อนอาสา',
+    createInvitationLink: 'สร้างลิงค์เชิญเพื่อนอาสา',
+    meritBook: 'บันทึกบุญ',
+    lastMeritAction: 'รายการบุญล่าสุด'
   },
   pageForgotPassword: {
     pageName: 'ลืมรหัสผ่าน',
@@ -177,6 +196,15 @@ export default {
     email: 'อีเมล',
     firstName: 'ชื่อ',
     lastName: 'นามสกุล'
+  },
+  meritBook: {
+    createToc: 'สร้างสารบัญ',
+    updateRecord: 'ปรับปรุงข้อมูล',
+    deleteRecord: 'ลบข้อมูล',
+    createWordlist: 'พิสูจน์อักษรและสร้างคลังคำบาลี',
+    tipitakaEdition: 'พระไตรปิฎก ฉบับ',
+    volumeNumber: 'เล่มที่',
+    pageNumber: 'หน้าที่'
   },
   failed: 'Action failed',
   success: 'Action was successful'

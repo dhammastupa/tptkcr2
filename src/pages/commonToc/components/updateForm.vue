@@ -60,12 +60,16 @@ import { ref, computed, watch } from 'vue'
 import { useStore } from 'vuex'
 import { db, Timestamp } from 'src/boot/firebase.js'
 import { updateDoc } from 'src/functions/manage-data.js'
+import useLogMeritMaking from 'src/hooks/merit-making.js'
 
 export default {
 
   setup () {
     // composable
     const $store = useStore()
+
+    // getters userName
+    const userID = computed(() => { return $store.getters['auth/uid'] })
 
     // getters userName
     const userName = computed(() => { return $store.getters['auth/userName'] })
@@ -107,7 +111,15 @@ export default {
             updatedOn: Timestamp.now(),
             updatedBy: userName.value
           }
-          updateDoc(collection.doc(commonToc.value.selected), { ...data })
+          updateDoc(collection.doc(commonToc.value.selected), { ...data }).then(() => {
+            useLogMeritMaking(
+              'commonToc',
+              { ...data },
+              'updateToc',
+              userID.value,
+              userName.value
+            )
+          })
           closeForm()
         } else {
           console.log('error')

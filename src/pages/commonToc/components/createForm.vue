@@ -30,6 +30,7 @@
           class="q-gutter-md"
         >
           <q-card>
+            <q-card-section>{{ commonToc.selectedRow.label }}</q-card-section>
             <q-card-section v-for="(v, index) in topicList" :key="index">
               <q-input
                 ref="formTopicRef"
@@ -75,12 +76,16 @@ import { useStore } from 'vuex'
 import { db, Timestamp } from 'src/boot/firebase.js'
 import { createDoc } from 'src/functions/manage-data.js'
 import { date } from 'quasar'
+import useLogMeritMaking from 'src/hooks/merit-making.js'
 
 export default {
 
   setup () {
     // composable
     const $store = useStore()
+
+    // getters uid
+    const userID = computed(() => { return $store.getters['auth/uid'] })
 
     // getters userName
     const userName = computed(() => { return $store.getters['auth/userName'] })
@@ -134,7 +139,7 @@ export default {
     }
 
     // function submit
-    async function submit () {
+    function submit () {
       formRef.value.validate().then(success => {
         if (success) {
           topicList.value.forEach((i) => {
@@ -153,7 +158,15 @@ export default {
               updatedOn: Timestamp.now(),
               updatedBy: userName.value
             }
-            createDoc(newDoc, { ...data })
+            createDoc(newDoc, { ...data }).then(() => {
+              useLogMeritMaking(
+                'commonToc',
+                { ...data },
+                'createToc',
+                userID.value,
+                userName.value
+              )
+            })
           })
           initialTopicList()
           closeForm()
@@ -165,6 +178,7 @@ export default {
 
     return {
       userName,
+      commonToc,
       dataForm,
       topicList,
       inputForm,

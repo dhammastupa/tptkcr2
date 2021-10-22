@@ -201,12 +201,13 @@
 <script>
 import _ from 'lodash'
 import { useStore } from 'vuex'
-import useHasPermission from 'src/hooks/has-permission.js'
 import { db, storage, Timestamp } from 'src/boot/firebase.js'
 import { updateDoc, deleteDoc } from 'src/functions/manage-data.js'
 import { ref, computed, watch } from 'vue'
 import { useQuasar, format } from 'quasar'
 import { useI18n } from 'vue-i18n'
+import useHasPermission from 'src/hooks/has-permission.js'
+import useLogMeritMaking from 'src/hooks/merit-making.js'
 
 const { pad } = format
 
@@ -234,6 +235,9 @@ export default {
     // getters authInfo
     const authInfo = computed(() => { return $store.getters['auth/authInfo'] })
 
+    // getters uid
+    const userID = computed(() => { return $store.getters['auth/uid'] })
+
     // getters userName
     const userName = computed(() => { return $store.getters['auth/userName'] })
 
@@ -252,16 +256,19 @@ export default {
     const splitterModel = ref(40) // spliter for show line number start at 150px
     const firstLine = ref(0) // first line ref
     const lineHeight = ref(1) // line height ref
+    // text area height
     const textAreaHeight = computed(() => {
       return firstLine.value + (_.split(textRef.value, '\n').length * lineHeight.value) + 100
     })
     const modifyFirstLine = ref(false) // modify firstLine flag ref
     const modifyLineHeight = ref(false) // modify lineHeight flag ref
+    // line count
     const lineCount = computed(() => {
       const textTrimmed = textRef.value.replace(/^\s*$(?:\r\n?|\n)/gm, '')
       const splitLines = _.without(_.split(textTrimmed, '\n'), '')
       return splitLines.length
     })
+    // word count
     const wordCount = computed(() => {
       let wordCount = 0
       const textTrimmed = textRef.value.replace(/^\s*$(?:\r\n?|\n)/gm, '')
@@ -391,9 +398,9 @@ export default {
       textRef.value = _.join(removeExtraSpaceArray, '\n')
     }
 
-    // -----------------------------------------
-    // function proofread create/delete wordList
-    // -----------------------------------------
+    // -----------------------------------------------
+    // $$ function proofread create/delete wordList $$
+    // -----------------------------------------------
     function proofread (value, evt) {
       removeExtraSpace()
       $q.dialog({
@@ -412,9 +419,25 @@ export default {
         }
       }).onOk(() => {
         if (value) {
+          // create wordlist & // logging
           createWordList()
+          useLogMeritMaking(
+            'tipitaka',
+            selectedRow.value,
+            'createWordlist',
+            userID.value,
+            userName.value
+          )
         } else {
+          // remvoe wordlist & // logging
           removeWordList()
+          useLogMeritMaking(
+            'tipitaka',
+            selectedRow.value,
+            'removeWordList',
+            userID.value,
+            userName.value
+          )
         }
         submit()
       }).onOk(() => {
@@ -478,7 +501,7 @@ export default {
     // function remove WordList
     // ------------------------
     function removeWordList () {
-      console.log('removeWordList')
+      console.log('removeWordList', selectedRow.value.id)
       const batch = db.batch()
       db.collection('wordList')
         .where('tipitakaRecordId', '==', selectedRow.value.id)
@@ -493,9 +516,9 @@ export default {
         })
     }
 
-    // ----------------------
-    // function delete record
-    // ----------------------
+    // ----------------------------
+    // $$ function delete record $$
+    // ----------------------------
     function deleteRecord () {
       $q.dialog({
         title: $t('system.confirm'),
@@ -506,9 +529,9 @@ export default {
         console.log('>>>> OK')
         // delete image
         // Create a reference to the file to delete
-        const desertRef = storage.ref().child(selectedRow.value.imageReference)
+        const imageRef = storage.ref().child(selectedRow.value.imageReference)
         // Delete the file
-        desertRef.delete()
+        imageRef.delete()
           .then(() => {
             console.log('deleted image')
           }).catch((error) => {
@@ -537,6 +560,14 @@ export default {
             })
             console.log(error.code)
           })
+        // logging
+        useLogMeritMaking(
+          'tipitaka',
+          selectedRow.value,
+          'deleteRecord',
+          userID.value,
+          userName.value
+        )
       }).onOk(() => {
         console.log('>>>> second OK catcher')
       }).onCancel(() => {
@@ -585,19 +616,27 @@ export default {
       )
     }
 
-    // --------------------
-    // function submit data
-    // --------------------
-    async function submit () {
+    // --------------------------
+    // $$ function submit data $$
+    // --------------------------
+    function submit () {
       const data = datatable.value.updateData
       const doc = db.collection('tipitaka').doc(data.id)
-      await updateDoc(doc, data)
+      updateDoc(doc, data)
         .then(() => {
           $q.notify({
             icon: 'done',
             color: 'positive',
             message: $t('system.success')
           })
+          // logging
+          useLogMeritMaking(
+            'tipitaka',
+            selectedRow.value,
+            'updateRecord',
+            userID.value,
+            userName.value
+          )
         })
         .catch((error) => {
           $q.notify({
@@ -609,13 +648,13 @@ export default {
         })
     }
 
-    // --------------------
+    // ------------------------
     // function softSubmit data
-    // --------------------
-    async function softSubmit () {
+    // ------------------------
+    function softSubmit () {
       const data = datatable.value.updateData
       const doc = db.collection('tipitaka').doc(data.id)
-      await updateDoc(doc, {
+      updateDoc(doc, {
         personalSetting: data.personalSetting
       })
     }

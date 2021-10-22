@@ -72,8 +72,15 @@
       </div>
 
       <div class="col-xs-12 col-sm-12 col-md-6">
+        <generate-link></generate-link>
+
         <user-group></user-group>
+
         <user-permission></user-permission>
+
+        <merit-book></merit-book>
+
+        <merit-chart></merit-chart>
       </div>
     </div>
 
@@ -93,9 +100,20 @@ export default {
 
   components: {
     userGroup: defineAsyncComponent(() => import(
-      'src/pages/users/profile/components/userGroup.vue')),
+      'src/pages/users/profile/components/userGroup.vue')
+    ),
     userPermission: defineAsyncComponent(() => import(
-      'src/pages/users/profile/components/userPermission.vue'))
+      'src/pages/users/profile/components/userPermission.vue')
+    ),
+    generateLink: defineAsyncComponent(() => import(
+      'src/pages/users/profile/components/generateLink.vue')
+    ),
+    meritBook: defineAsyncComponent(() => import(
+      'src/pages/users/profile/components/meritBook.vue')
+    ),
+    meritChart: defineAsyncComponent(() => import(
+      'src/pages/users/profile/components/meritChart.vue')
+    )
   },
 
   setup () {
@@ -121,8 +139,6 @@ export default {
         id: authInfo.value.uid,
         firstName: firstName.value,
         lastName: lastName.value,
-        createdOn: Timestamp.now(),
-        createdBy: userName.value,
         updatedOn: Timestamp.now(),
         updatedBy: userName.value
       }

@@ -1,5 +1,6 @@
 const functions = require('firebase-functions')
 const { createProfile } = require('./create-profile')
+const { getInviterInfo } = require('./get-inviter-info')
 
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
@@ -10,5 +11,7 @@ const { createProfile } = require('./create-profile')
 // })
 
 module.exports = {
-  authOnCreate: functions.auth.user().onCreate(createProfile)
+  // authOnCreate: functions.auth.user().onCreate(createProfile),
+  createProfile: functions.https.onCall(createProfile),
+  getInviterInfo: functions.https.onCall(getInviterInfo)
 }

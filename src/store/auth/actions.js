@@ -1,9 +1,9 @@
-import { auth, db } from 'src/boot/firebase'
+import { auth, db, func } from 'src/boot/firebase'
 import { LocalStorage, Loading } from 'quasar'
 import { showMessage } from 'src/functions/show-message.js'
 import { includes, uniq } from 'lodash'
 
-// ผู้ใช้งานเข้าระบบ
+// เข้าระบบ
 export const loginUser = async ({ context }, payload) => {
   Loading.show()
   let result = {}
@@ -15,13 +15,13 @@ export const loginUser = async ({ context }, payload) => {
       result = { success: false, response: error }
       switch (error.code) {
         case 'auth/wrong-password':
-          showMessage('systemMessage.errorTitle', 'storeAuth.wrongPassword')
+          showMessage('system.errorTitle', 'system.wrongPassword')
           break
         case 'auth/user-not-found':
-          showMessage('systemMessage.errorTitle', 'storeAuth.userNotFound')
+          showMessage('system.errorTitle', 'system.userNotFound')
           break
         default:
-          showMessage('systemMessage.errorTitle', 'systemMessage.error')
+          showMessage('system.errorTitle', 'system.error')
       }
       console.log('error: ', error)
     })
@@ -29,34 +29,29 @@ export const loginUser = async ({ context }, payload) => {
   return result
 }
 
-// ลงทะเบียนผู้ใช้งาน
-export const registerUser = async ({ commit, dispatch }, payload) => {
-  Loading.show()
-  await auth.createUserWithEmailAndPassword(payload.email, payload.password)
-    .then(response => {
-      // ส่งอีเมลเพื่อการยืนยัน
-      auth.currentUser.sendEmailVerification()
-        .then(() => {
-          // แสดงข้อความให้เปิดอีเมลเพื่อทำการยืนยัน
-          showMessage('systemMessage.infoTitle', 'storeAuth.sendEmailVerification')
+// ลงทะเบียน
+export const registerUser = ({ commit, dispatch }, payload) => {
+  return new Promise((resolve, reject) => {
+    auth.createUserWithEmailAndPassword(payload.email, payload.password)
+      .then((userCredential) => {
+        auth.currentUser.sendEmailVerification()
+        const createProfile = func.httpsCallable('createProfile')
+        createProfile({
+          uid: userCredential.user.uid,
+          email: payload.email,
+          firstName: payload.firstName,
+          lastName: payload.lastName,
+          inviterUid: payload.inviterUid,
+          inviterCode: payload.inviterCode
+        }).then(() => {
+          resolve(userCredential)
         })
-        .catch(error => {
-          showMessage('systemMessage.errorTitle', 'systemMessage.error')
-          console.log('error: ', error)
-        })
-      // ทำการล็อกเอ๊าท์
-      dispatch('logoutUser')
-    })
-    .catch(error => {
-      switch (error.code) {
-        case 'auth/email-already-in-use':
-          showMessage('systemMessage.errorTitle', 'storeAuth.emailAlreadyInUse')
-          break
-        default:
-          showMessage('systemMessage.errorTitle', 'systemMessage.error')
-      }
-      console.log('error: ', error)
-    })
+      })
+      .catch(error => {
+        console.log(error.code)
+        reject(error)
+      })
+  })
 }
 
 // ล็อกเอาท์ผู้ใช้งาน
@@ -76,7 +71,7 @@ export const resetPassword = async ({ context }, payload) => {
     })
     .catch(error => {
       result = { success: false, response: error }
-      showMessage('systemMessage.errorTitle', 'systemMessage.error')
+      showMessage('system.errorTitle', 'system.error')
       console.log('error: ', error)
     })
   return result
@@ -85,7 +80,6 @@ export const resetPassword = async ({ context }, payload) => {
 // เมื่อมีการเปลี่ยน state การ login / logout
 export const handleAuthStateChange = async ({ state, commit, dispatch }) => {
   await auth.onAuthStateChanged(user => {
-    console.log('state changed')
     Loading.hide()
     // ผู้ใช้ระบบ
     let authPayload = {
@@ -96,8 +90,10 @@ export const handleAuthStateChange = async ({ state, commit, dispatch }) => {
     }
     // รายละเอียดผู้ใช้งาน
     const userInfoPayload = {
+      uid: '',
       firstName: '',
-      lastName: ''
+      lastName: '',
+      invitationIDs: []
     }
     // รายละเอียดสิทธิ์
     const userRightPayload = {
@@ -106,6 +102,7 @@ export const handleAuthStateChange = async ({ state, commit, dispatch }) => {
     }
     // กระบวนการตรวจสอบ
     if (user) {
+      // get info from firebase auth
       authPayload = {
         loggedIn: true,
         uid: user.uid,
@@ -118,14 +115,26 @@ export const handleAuthStateChange = async ({ state, commit, dispatch }) => {
       for (const property in authPayload) {
         LocalStorage.set(property, authPayload[property])
       }
+      // get info from user db
       db.collection('user').doc(user.uid).get()
         .then(snapshot => {
-          const documents = snapshot.data()
-          userInfoPayload.firstName = documents.firstName
-          userInfoPayload.lastName = documents.lastName
-          commit('setUserInfo', userInfoPayload)
+          // check if user in db is exists
+          if (snapshot.exists) {
+            const documents = snapshot.data()
+            userInfoPayload.uid = documents.uid
+            userInfoPayload.firstName = documents.firstName
+            userInfoPayload.lastName = documents.lastName
+            userInfoPayload.invitationIDs = documents.invitationIDs || []
+            commit('setUserInfo', userInfoPayload)
+            dispatch('friendList', user.uid)
+          } else {
+            // if not exists then loguser out
+            dispatch('logoutUser')
+          }
         })
-      db.collection('group').where('user', 'array-contains-any', [user.uid])
+      // get user groups
+      db.collection('group')
+        .where('user', 'array-contains-any', [user.uid])
         .get()
         .then(querySnapshot => {
           querySnapshot.forEach((doc) => {
@@ -161,4 +170,15 @@ export const resendEmail = ({ dispatch }) => {
 // ตรวจสอบสิทธฺืการใช้งาน
 export const hasPermission = ({ state }, payload) => {
   return includes(state.authPermission.permission, payload)
+}
+
+// เพื่อนอาสา
+export const friendList = ({ commit }, payload) => {
+  db.collection('user')
+    .where('inviterUid', '==', payload)
+    .get()
+    .then(docs => {
+      const result = docs.empty ? [] : docs.docs.map(doc => doc.data())
+      commit('setFriendList', result)
+    })
 }

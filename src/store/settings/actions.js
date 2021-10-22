@@ -24,9 +24,9 @@ export function createProfileMenu ({ rootState, commit }) {
       label: rootState.auth.authInfo.email,
       caption: dateFormattedString,
       to: '/users/profile',
-      class: 'text-white bg-deep-purple-6',
+      class: 'text-white bg-deep-purple-4',
       loggedIn: true,
-      userEmailVerified: true,
+      userEmailVerified: false,
       havePermission: ''
     }
   ]
@@ -116,7 +116,7 @@ export function createCommonReferenceMenu ({ rootState, commit }, payload) {
             to: '/common-toc/' + doc.id,
             loggedIn: true,
             userEmailVerified: true,
-            havePermission: 'tipitaka'
+            havePermission: 'common-toc'
           })
         })
         commit('setCommonReferenceMenu', result)
@@ -168,6 +168,15 @@ export function createConfigurationMenu ({ commit }, payload) {
       loggedIn: true,
       userEmailVerified: true,
       havePermission: 'configuration'
+    },
+    {
+      icon: 'construction',
+      label: 'mainNavigation.utility',
+      to: '/configuration/utility',
+      class: 'text-black',
+      loggedIn: true,
+      userEmailVerified: true,
+      havePermission: 'utility'
     }
   ]
   commit('setConfigurationMenu', result)

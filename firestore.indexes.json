@@ -65,6 +65,20 @@
       ]
     },
     {
+      "collectionGroup": "meritBook",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "userID",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "createdOn",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
       "collectionGroup": "tipitaka",
       "queryScope": "COLLECTION",
       "fields": [
@@ -169,25 +183,17 @@
       "queryScope": "COLLECTION",
       "fields": [
         {
-          "fieldPath": "pageNumber",
-          "order": "ASCENDING"
-        },
-        {
           "fieldPath": "tipitakaEdition",
           "order": "ASCENDING"
         },
         {
-          "fieldPath": "volumeNumber",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "lineNumber",
+          "fieldPath": "wordIndex",
           "order": "DESCENDING"
         }
       ]
     },
     {
-      "collectionGroup": "wordlist",
+      "collectionGroup": "wordList",
       "queryScope": "COLLECTION",
       "fields": [
         {
@@ -209,51 +215,7 @@
       ]
     },
     {
-      "collectionGroup": "wordlist",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
-          "fieldPath": "pageNumber",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "tipitakaEdition",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "volumeNumber",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "wordNumber",
-          "order": "ASCENDING"
-        }
-      ]
-    },
-    {
-      "collectionGroup": "wordlist",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
-          "fieldPath": "pageNumber",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "tipitakaEdition",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "volumeNumber",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "wordNumber",
-          "order": "DESCENDING"
-        }
-      ]
-    },
-    {
-      "collectionGroup": "wordlist",
+      "collectionGroup": "wordList",
       "queryScope": "COLLECTION",
       "fields": [
         {
@@ -261,63 +223,17 @@
           "order": "ASCENDING"
         },
         {
-          "fieldPath": "volumeNumber",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "pageNumber",
+          "fieldPath": "word",
           "order": "ASCENDING"
         }
       ]
     },
     {
-      "collectionGroup": "wordlist",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
-          "fieldPath": "tipitakaEdition",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "wordIndex",
-          "order": "ASCENDING"
-        }
-      ]
-    },
-    {
-      "collectionGroup": "wordlist",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
-          "fieldPath": "tipitakaEdition",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "wordIndex",
-          "order": "DESCENDING"
-        }
-      ]
-    },
-    {
-      "collectionGroup": "wordlist",
+      "collectionGroup": "wordList",
       "queryScope": "COLLECTION",
       "fields": [
         {
           "fieldPath": "tipitakaRecordId",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "wordIndex",
-          "order": "ASCENDING"
-        }
-      ]
-    },
-    {
-      "collectionGroup": "wordlist",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
-          "fieldPath": "volumeNumber",
           "order": "ASCENDING"
         },
         {

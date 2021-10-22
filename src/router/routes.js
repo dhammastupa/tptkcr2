@@ -11,13 +11,21 @@ const routes = [
         path: '',
         component: () => import('pages/index.vue')
       },
-      // login page
+      // registration
+      {
+        path: '/users/registration/:id',
+        name: 'registrationPage',
+        component: () => import('src/pages/users/registration.vue'),
+        beforeEnter: (to, from, next) => notLogin(to, next)
+      },
+      // login
       {
         path: '/users/login',
         name: 'loginPage',
         component: () => import('src/pages/users/Login.vue'),
         beforeEnter: (to, from, next) => notLogin(to, next)
       },
+      // reset password
       {
         path: '/users/forgot-password',
         name: 'forgotPasswordPage',
@@ -65,6 +73,13 @@ const routes = [
         name: 'webContent',
         component: () => import('src/pages/configuration/webContent/index.vue'),
         beforeEnter: (to, from, next) => requiresPermission(['configuration'], to, next)
+      },
+      // utility
+      {
+        path: '/configuration/utility',
+        name: 'utility',
+        component: () => import('src/pages/configuration/utility/index.vue'),
+        beforeEnter: (to, from, next) => requiresPermission(['utility'], to, next)
       },
       // users
       // profile

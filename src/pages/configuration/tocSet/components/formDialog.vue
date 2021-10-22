@@ -220,9 +220,7 @@ export default {
       } else if (action.value === 'update') {
         openForm(document.value)
       }
-    },
-    { immediate: true }
-    )
+    }, { immediate: true })
 
     // function initialForm
     function initialForm () {
