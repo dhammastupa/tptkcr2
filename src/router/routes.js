@@ -9,7 +9,7 @@ const routes = [
     children: [
       {
         path: '',
-        component: () => import('pages/index.vue')
+        component: () => import('pages/Index.vue')
       },
       // registration
       {
@@ -36,20 +36,20 @@ const routes = [
       {
         path: '/project',
         name: 'project',
-        component: () => import('src/pages/project.vue')
+        component: () => import('src/pages/Project.vue')
       },
       // tipitaka preservation
       {
         path: '/preservation/:id',
         name: 'tipitakaPreservation',
-        component: () => import('src/pages/preservation/index.vue'),
+        component: () => import('src/pages/preservation/Index.vue'),
         beforeEnter: (to, from, next) => requiresPermission(['tipitaka'], to, next)
       },
       // table of content
       {
         path: '/common-toc/:id',
         name: 'common-toc',
-        component: () => import('src/pages/commonToc/index.vue'),
+        component: () => import('src/pages/commonToc/Index.vue'),
         beforeEnter: (to, from, next) => requiresPermission(['common-toc'], to, next)
       },
       // configuration
@@ -57,21 +57,21 @@ const routes = [
       {
         path: '/configuration/tipitaka-edition',
         name: 'tipitakaEditionPage',
-        component: () => import('src/pages/configuration/tipitakaEdition/index.vue'),
+        component: () => import('src/pages/configuration/tipitakaEdition/Index.vue'),
         beforeEnter: (to, from, next) => requiresPermission(['configuration'], to, next)
       },
       // tocset
       {
         path: '/configuration/toc-set',
         name: 'tocSet',
-        component: () => import('src/pages/configuration/tocSet/index.vue'),
+        component: () => import('src/pages/configuration/tocSet/Index.vue'),
         beforeEnter: (to, from, next) => requiresPermission(['configuration'], to, next)
       },
       // webContent
       {
         path: '/configuration/web-content',
         name: 'webContent',
-        component: () => import('src/pages/configuration/webContent/index.vue'),
+        component: () => import('src/pages/configuration/webContent/Index.vue'),
         beforeEnter: (to, from, next) => requiresPermission(['configuration'], to, next)
       },
       // utility
@@ -118,7 +118,7 @@ const routes = [
   },
   {
     path: '/sample',
-    component: () => import('src/pages/sample.vue')
+    component: () => import('src/pages/Sample.vue')
   },
   // Always leave this as last one,
   // but you can also remove it
