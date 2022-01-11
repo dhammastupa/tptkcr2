@@ -7,7 +7,7 @@
       :rows="rows"
       :columns="columns"
       :filter="filter"
-      row-key="id"
+      row-key="uid"
       @row-click="onRowClick"
     >
       <template v-slot:top-right>

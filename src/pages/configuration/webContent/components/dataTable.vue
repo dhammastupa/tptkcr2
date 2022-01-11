@@ -7,7 +7,7 @@
       :rows="rows"
       :columns="columns"
       :filter="filter"
-      row-key="id"
+      row-key="docId"
       @row-click="onRowClick"
     >
       <template v-slot:top-right>
@@ -16,7 +16,8 @@
             <q-icon name="search" />
             <q-btn flat color="white" text-color="primary" round icon="add"
               class="q-ma-md"
-              @click="addBtnClick" />
+              @click="addBtnClick"
+            />
           </template>
         </q-input>
       </template>
@@ -73,13 +74,6 @@ export default {
           classes: 'ellipsis',
           style: 'max-width: 150px',
           headerStyle: 'max-width: 150px',
-          sortable: true,
-          align: 'left'
-        },
-        {
-          name: 'status',
-          field: 'status',
-          label: $t('pageWebContent.status'),
           sortable: true,
           align: 'left'
         }

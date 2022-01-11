@@ -10,6 +10,30 @@ div.card-dialog-500 {
   margin: 0 auto;
 }
 
+div.card-dialog-350 {
+  width: 350px;
+  margin: 0 auto;
+}
+
+div.card-dialog-800 {
+  width: 800px;
+  margin: 0 auto;
+}
+
 div.card-dialog-max {
   width: 100vw;
+}
+
+div.para {
+  text-indent: 15%;
+  padding-top: 1em;
+}
+
+h3.q-timeline__heading-title {
+  font-size: 22px !important;
+  padding-bottom: 0px;
+}
+
+.highlight {
+  background-color: yellow;
 }

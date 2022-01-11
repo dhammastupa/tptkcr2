@@ -60,7 +60,7 @@
 import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import { db, Timestamp } from 'src/boot/firebase'
-import { getDocs, createDoc } from 'src/functions/manage-data'
+import { getPromiseDocs, createDoc } from 'src/functions/manage-data'
 import { useQuasar } from 'quasar'
 import { useI18n } from 'vue-i18n'
 import _ from 'lodash'
@@ -102,14 +102,11 @@ export default {
 
     // function find pageNumber to create
     async function findPageNumber () {
-      let documents = []
-      await getDocs(
+      const documents = await getPromiseDocs(
         db.collection('tipitaka')
           .where('tipitakaEdition', '==', tipitakaEditionID.value)
           .where('volumeNumber', '==', variables.value.volume)
-      ).then((data) => {
-        documents = data
-      })
+      )
 
       // เอาข้อมูลของฉบับและเล่มที่เลือกมา เพื่อดูว่าทำหน้าไหนไปแล้วบ้าง
       const createdPages = _.map(documents, 'pageNumber')
@@ -151,7 +148,7 @@ export default {
         updatedOn: Timestamp.now(),
         updatedBy: userName.value
       })
-      const data = { ...{ id: newDocId }, ...details.value }
+      const data = { ...{ docId: newDocId }, ...details.value }
       await createDoc(newDoc, { ...data })
         .then(() => {
           $q.notify({

@@ -14,13 +14,6 @@ export default function useCrudForm (collection = null) {
   // getters userName
   const userName = computed(() => { return $store.getters['auth/userName'] })
 
-  // formAction
-  const formAction = ref({
-    openDialog: false,
-    action: 'add',
-    document: {}
-  })
-
   // form variables
   const dialog = ref(null)
   const action = ref(null)
@@ -30,6 +23,13 @@ export default function useCrudForm (collection = null) {
   const deleteAction = ref(false)
   const filter = ref(null)
   const rows = collection ? useLiveData(collection) : []
+
+  // initial formAction
+  const formAction = ref({
+    openDialog: false,
+    action: 'add',
+    document: {}
+  })
 
   // function onCreateBtnClick
   function createDocument () {
@@ -49,18 +49,25 @@ export default function useCrudForm (collection = null) {
     }
   }
 
-  function submit () {
+  function submit (docId = null) {
     // update form before save data
     form.value.updatedOn = Timestamp.now()
     form.value.updatedBy = userName.value
     formRef.value.validate().then(success => {
       if (success) {
+        // -------------------
         // create
+        // new record with uid
+        // -------------------
         if (action.value === 'add') {
-          const newDoc = collection.doc()
-          const newDocId = newDoc.id
-          const data = { ...{ id: newDocId }, ...form.value }
-          createDoc(newDoc, { ...data })
+          let doc = null
+          if (docId) {
+            doc = collection.doc(docId)
+          } else {
+            doc = collection.doc()
+          }
+          const data = { ...{ docId: doc.id }, ...form.value }
+          createDoc(doc, { ...data })
             .then(() => {
               $q.notify({
                 icon: 'done',
@@ -77,11 +84,14 @@ export default function useCrudForm (collection = null) {
               })
               console.log(error.code)
             })
-          // update
+        // ----------------
+        // update || delete
+        // ----------------
         } else if (action.value === 'update') {
-          const doc = collection.doc(form.value.id)
-          // in case want to delete document
+          const doc = collection.doc(docId)
           if (deleteAction.value === true) {
+          // delete
+          // ------
             $q.dialog({
               title: $t('system.confirm'),
               message: $t('system.confirmToDelete'),
@@ -109,7 +119,8 @@ export default function useCrudForm (collection = null) {
               console.log('I am triggered on both OK and Cancel')
             })
           } else {
-            // update document
+          // update
+          // ------
             updateDoc(doc, { ...form.value })
               .then(() => {
                 $q.notify({

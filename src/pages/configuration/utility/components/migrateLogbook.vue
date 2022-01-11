@@ -25,6 +25,7 @@
 
 <script>
 import { db } from 'src/boot/firebase.js'
+import { getPromiseDocs } from 'src/functions/manage-data.js'
 
 export default {
   emits: ['updateLog', 'playSound'],
@@ -59,9 +60,7 @@ export default {
 
       // process
       // get users
-      const docs = await db.collection('user').get()
-      const userDocs = docs.empty ? [] : docs.docs.map(doc => doc.data())
-
+      const userDocs = await getPromiseDocs(db.collection('user'))
       // for each user
       for (const user of userDocs) {
         let accumulate = 0

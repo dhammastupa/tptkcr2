@@ -27,7 +27,7 @@
       <q-card-section>
         <q-form
           ref="formRef"
-          @submit="submit"
+          @submit="submit(form.docId)"
           @reset="initialForm"
           class="q-gutter-md"
         >
@@ -131,17 +131,6 @@
             min-height="5rem"
           />
 
-          <q-select
-            filled
-            v-model="form.status"
-            :options="opt.status"
-            :label="$t('pageWebContent.status')"
-            emit-value
-            map-options
-            lazy-rules
-            :rules="[ val => val && val.length > 0 || $t('system.requiredField')]"
-          />
-
           <q-field
             v-if="action==='add'" disable
             filled :label="$t('system.createdOn')" stack-label>
@@ -212,9 +201,8 @@
 </template>
 
 <script>
-import { reactive, watch } from 'vue'
+import { watch } from 'vue'
 import { db, Timestamp } from 'src/boot/firebase.js'
-import { useI18n } from 'vue-i18n'
 import useCrudForm from 'src/hooks/crud.js'
 
 export default {
@@ -229,22 +217,7 @@ export default {
     const collection = db.collection('webContent')
 
     // composable
-    const $t = useI18n().t
     const { dialog, action, document, form, formRef, deleteAction, userName, submit } = useCrudForm(collection)
-
-    // options variables
-    const opt = reactive({
-      status: [
-        {
-          value: 'published',
-          label: $t('pageWebContent.published')
-        },
-        {
-          value: 'draft',
-          label: $t('pageWebContent.draft')
-        }
-      ]
-    })
 
     watch(props, function () {
       dialog.value = props.formAction.openDialog
@@ -264,7 +237,6 @@ export default {
         routeName: '',
         name: '',
         content: '',
-        status: 'draft',
         createdOn: Timestamp.now(),
         createdBy: userName.value,
         updatedOn: Timestamp.now(),
@@ -282,7 +254,6 @@ export default {
       dialog,
       action,
       form,
-      opt,
       formRef,
       deleteAction,
       initialForm,

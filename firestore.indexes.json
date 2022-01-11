@@ -2,11 +2,29 @@
   "indexes": [
     {
       "collectionGroup": "commonToc",
-      "queryScope": "COLLECTION",    
+      "queryScope": "COLLECTION",
       "fields": [
         {
-          "fieldPath": "parent",     
-          "order": "ASCENDING"       
+          "fieldPath": "parent",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "sequence",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "commonToc",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "parent",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "tcrSetId",
+          "order": "ASCENDING"
         },
         {
           "fieldPath": "sequence",
@@ -75,6 +93,24 @@
         {
           "fieldPath": "createdOn",
           "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "tcrItem",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "parent",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "tcrSetId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "sequence",
+          "order": "ASCENDING"
         }
       ]
     },
@@ -189,6 +225,20 @@
         {
           "fieldPath": "wordIndex",
           "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "wordlist",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "tipitakaRecordId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "wordIndex",
+          "order": "ASCENDING"
         }
       ]
     },

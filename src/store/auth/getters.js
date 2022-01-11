@@ -1,3 +1,5 @@
+import { sortBy } from 'lodash'
+
 export function uid (state) {
   return state.uid
 }
@@ -31,5 +33,5 @@ export function authPermission (state) {
 }
 
 export function getFriendList (state) {
-  return state.friendList
+  return sortBy(state.friendList, ['firstName'])
 }

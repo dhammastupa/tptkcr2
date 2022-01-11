@@ -1,7 +1,7 @@
 import { auth, db, func } from 'src/boot/firebase'
 import { LocalStorage, Loading } from 'quasar'
 import { showMessage } from 'src/functions/show-message.js'
-import { includes, uniq } from 'lodash'
+import { uniq } from 'lodash'
 
 // เข้าระบบ
 export const loginUser = async ({ context }, payload) => {
@@ -167,10 +167,10 @@ export const resendEmail = ({ dispatch }) => {
   dispatch('logoutUser')
 }
 
-// ตรวจสอบสิทธฺืการใช้งาน
-export const hasPermission = ({ state }, payload) => {
-  return includes(state.authPermission.permission, payload)
-}
+// // ตรวจสอบสิทธฺืการใช้งาน
+// export const hasPermission = ({ state }, payload) => {
+//   return includes(state.authPermission.permission, payload)
+// }
 
 // เพื่อนอาสา
 export const friendList = ({ commit }, payload) => {

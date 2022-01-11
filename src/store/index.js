@@ -4,7 +4,7 @@ import { createStore } from 'vuex'
 import auth from './auth'
 import settings from './settings'
 import preservation from './preservation'
-import commonToc from './commonToc'
+import commonReference from './common-reference'
 
 // import example from './module-example'
 
@@ -37,7 +37,7 @@ const store = createStore({
     settings,
     // pages
     preservation,
-    commonToc
+    commonReference
   },
   strict: process.env.DEBUGGING
 })

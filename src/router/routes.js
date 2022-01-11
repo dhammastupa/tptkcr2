@@ -45,12 +45,12 @@ const routes = [
         component: () => import('src/pages/preservation/Index.vue'),
         beforeEnter: (to, from, next) => requiresPermission(['tipitaka'], to, next)
       },
-      // table of content
+      // common-reference
       {
-        path: '/common-toc/:id',
-        name: 'common-toc',
-        component: () => import('src/pages/commonToc/Index.vue'),
-        beforeEnter: (to, from, next) => requiresPermission(['common-toc'], to, next)
+        path: '/common-reference/:id',
+        name: 'common-reference',
+        component: () => import('src/pages/common-reference/Index.vue'),
+        beforeEnter: (to, from, next) => requiresPermission(['common-reference'], to, next)
       },
       // configuration
       // tipitaka-edition
@@ -60,11 +60,11 @@ const routes = [
         component: () => import('src/pages/configuration/tipitakaEdition/Index.vue'),
         beforeEnter: (to, from, next) => requiresPermission(['configuration'], to, next)
       },
-      // tocset
+      // tcrSet
       {
-        path: '/configuration/toc-set',
-        name: 'tocSet',
-        component: () => import('src/pages/configuration/tocSet/Index.vue'),
+        path: '/configuration/tcr-set',
+        name: 'tcrSet',
+        component: () => import('src/pages/configuration/tcrSet/Index.vue'),
         beforeEnter: (to, from, next) => requiresPermission(['configuration'], to, next)
       },
       // webContent
@@ -72,6 +72,13 @@ const routes = [
         path: '/configuration/web-content',
         name: 'webContent',
         component: () => import('src/pages/configuration/webContent/Index.vue'),
+        beforeEnter: (to, from, next) => requiresPermission(['configuration'], to, next)
+      },
+      // article
+      {
+        path: '/configuration/article',
+        name: 'article',
+        component: () => import('src/pages/configuration/article/Index.vue'),
         beforeEnter: (to, from, next) => requiresPermission(['configuration'], to, next)
       },
       // utility

@@ -54,15 +54,10 @@ export default {
 
     const datatable = computed(() => { return $store.getters['preservation/getDatatable'] })
 
-    function hasPermission (rqPermission) {
-      return $store.dispatch('auth/hasPermission', rqPermission)
-    }
-
     return {
       selection,
       variables,
-      datatable,
-      hasPermission
+      datatable
     }
   }
 }

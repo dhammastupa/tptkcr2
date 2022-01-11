@@ -50,7 +50,9 @@
       <div class="q-gutter-sm">
         <q-list bordered separator>
           <q-item v-for="(i, index) in friendList" :key="index">
-            <q-item-section>{{ i.firstName}} {{i.lastName}}</q-item-section>
+            <q-item-section>
+              {{ i.firstName}} {{i.lastName}} <span class="text-blue">{{ i.email }}</span>
+            </q-item-section>
             <q-item-section side>{{ $filters.timeStampToDate(i.createdOn) }}</q-item-section>
           </q-item>
         </q-list>

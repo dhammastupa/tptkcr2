@@ -10,22 +10,28 @@
           <div class="q-pa-md row items-start q-gutter-md">
             <!-- wordListDataRepair -->
             <div class="col-auto">
-              <word-list-data-repair
+              <wordList-data-repair
                 @updateLog="updateLog"
                 @playSound="playSound"
               >
-              </word-list-data-repair>
+              </wordList-data-repair>
             </div>
             <!-- end wordListDataRepair  -->
 
-            <!-- migrateLogbook -->
+            <!-- checkTcrItem -->
             <div class="col-auto">
+              <check-tcr-item></check-tcr-item>
+            </div>
+            <!-- end checkTcrItem -->
+
+            <!-- migrateLogbook -->
+            <!-- <div class="col-auto">
               <migrate-logbook
                 @updateLog="updateLog"
                 @playSound="playSound"
               >
               </migrate-logbook>
-            </div>
+            </div> -->
             <!-- end migrateLogbook  -->
           </div>
         </div>
@@ -53,13 +59,15 @@
 <script>
 import { ref } from 'vue'
 import wordListDataRepair from 'src/pages/configuration/utility/components/wordListDataRepair'
-import migrateLogbook from 'src/pages/configuration/utility/components/migrateLogbook'
+import checkTcrItem from 'src/pages/configuration/utility/components/checkTcrItem'
+// import migrateLogbook from 'src/pages/configuration/utility/components/migrateLogbook'
 import notifySound from 'src/assets/sounds/airplane-sound-notify.mp3'
 
 export default {
   components: {
     wordListDataRepair,
-    migrateLogbook
+    checkTcrItem
+    // migrateLogbook
   },
 
   setup () {
@@ -86,7 +94,7 @@ export default {
       splitterModel,
       logs,
       wordListDataRepair,
-      migrateLogbook,
+      // migrateLogbook,
       updateLog,
       playSound
     }

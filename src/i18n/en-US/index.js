@@ -4,6 +4,7 @@
 export default {
   system: {
     appName: 'Tipiṭaka Common Reference Platform',
+    action: 'Action',
     login: 'Login',
     logout: 'Logout',
     abbrOrg: 'PTF',
@@ -53,7 +54,12 @@ export default {
     wrongPassword: 'The password is invalid or the user does not have a password.',
     userNotFound: 'There is no user record corresponding to this identifier. The user may have been deleted.',
     sendPasswordResetEmail: 'A password reset link was sent. Click the link in the email to create a new password.',
-    notInvited: 'Inviter information not found.'
+    notInvited: 'Inviter information not found.',
+    preview: 'Preview',
+    readMore: 'Read More',
+    start: 'Start',
+    end: 'End',
+    searchTextNotFound: 'The search text was not found'
   },
   mainNavigation: {
     home: 'Home',
@@ -62,14 +68,17 @@ export default {
     commonReference: 'Common Reference',
     configuration: 'Configuration',
     tipitakaEdition: 'Tipitaka Edition',
-    tocSet: 'Table of Content Set',
+    tcrSet: 'Table of Content Set',
     webContent: 'Web Content',
+    article: 'Article',
     accessControl: 'Access Control',
     user: 'User',
     group: 'Group',
     permission: 'Permission',
     profile: 'User Profile',
     accesscontrolUser: 'User',
+    accesscontrolGroup: 'Group',
+    accesscontrolPermission: 'Permission',
     utility: 'Utility'
   },
   pageLogin: {
@@ -148,6 +157,37 @@ export default {
     words: 'Words',
     lineControlPanel: 'Line Control Panel'
   },
+  pageCommonReference: {
+    createItem: 'Create',
+    editItem: 'Edit',
+    upward: 'Upward',
+    downward: 'Downward',
+    changeParent: 'Change Parent',
+    openTipitaka: 'Open Tipitaka',
+    tipitakaEdtion: 'Tipitaka Edtion',
+    unselectItem: 'Clear Selected/Ticked',
+    volume: 'Volume',
+    volumes: 'Volumes',
+    page: 'Page',
+    pages: 'Pages',
+    imageScan: 'Image Scan',
+    imageWordList: 'WordList',
+    referenceWordList: 'Reference WordList',
+    tocWordList: 'TOC WordList',
+    noRecordFound: 'No Record Found',
+    wordRange: 'Range',
+    volumeNumber: 'Volume Number',
+    pageNumber: 'Page Number',
+    noSubcontents: 'No Subcontents',
+    topic: 'Topic',
+    deleteItem: 'Delete',
+    commonReference: 'Common Reference',
+    showReference: 'Show Reference',
+    addToReference: 'Add Reference',
+    foundReferenceData: 'Found Reference Data',
+    notUnderAnotherTopic: 'Not Under Anther Topic',
+    updateItem: 'Update'
+  },
   pageCommonToc: {
     createNode: 'Create',
     editNode: 'Edit',
@@ -176,7 +216,7 @@ export default {
     addToReference: 'Add Reference',
     foundReferenceData: 'Found Reference Data'
   },
-  pageTocSet: {
+  pageTcrSet: {
     sequence: 'Sequence',
     name: 'Name',
     description: 'Description',
@@ -189,18 +229,31 @@ export default {
     content: 'Content',
     status: 'Status',
     draft: 'Draft',
-    published: 'Published'
+    published: 'Published',
+    publishedOn: 'Published On'
+  },
+  pageArticle: {
+    sequence: 'Sequence',
+    title: 'Title',
+    taxonomy: 'Taxonomy',
+    body: 'Body',
+    publishOn: 'Publish On'
   },
   pageAccessControl: {
     email: 'Email',
     firstName: 'First Name',
-    lastName: 'Last Name'
+    lastName: 'Last Name',
+    role: 'Role',
+    permission: 'Permission',
+    description: 'Description',
+    userList: 'User List',
+    permissionList: 'Permission List'
   },
   meritBook: {
     createToc: 'Create Table of Contents',
     updateRecord: 'Update Record',
     deleteRecord: 'Delete Record',
-    createWordlist: 'Proofread and Create Pali Word Index',
+    createWordList: 'Proofread and Create Pali Word Index',
     tipitakaEdition: 'Tipitaka Edition',
     volumeNumber: 'Volume Number',
     pageNumber: 'Page Number'

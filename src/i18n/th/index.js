@@ -4,6 +4,7 @@
 export default {
   system: {
     appName: 'ระบบ​เครือข่ายการอ้างอิง​ร่วมพระไตรปิฎก',
+    action: 'ดำเนินการ',
     login: 'เข้าระบบ',
     logout: 'ออกระบบ',
     abbrOrg: 'PTF',
@@ -53,9 +54,13 @@ export default {
     wrongPassword: 'รหัสผ่านไม่ถูกต้อง',
     userNotFound: 'ไม่พบบัญชีผู้ใช้ตามที่ระบุ',
     sendPasswordResetEmail: 'ระบบได้ทำการส่งลิงก์สำหรับเปลี่ยนรหัสผ่าน ไปยังอีเมลของคุณแล้ว กรุณาตรวจสอบและทำการกดลิงก์เพื่อการกำหนดรหัสผ่านใหม่ที่ต้องการ',
-    notInvited: 'ไม่พบรหัสเชิญชวน'
+    notInvited: 'ไม่พบรหัสเชิญชวน',
+    preview: 'แสดง',
+    readMore: 'อ่านต่อ',
+    start: 'เริ่ม',
+    end: 'จบ',
+    searchTextNotFound: 'ไม่พบข้อความที่ค้น'
   },
-  // pageName
   mainNavigation: {
     home: 'หน้าแรก',
     project: 'เกี่ยวกับโครงการ',
@@ -63,14 +68,17 @@ export default {
     commonReference: 'อ้างอิงร่วม',
     configuration: 'ตั้งค่า',
     tipitakaEdition: 'ฉบับพระไตรปิฎก',
-    tocSet: 'ชุดสารบัญ',
+    tcrSet: 'ชุดอ้างอิงร่วม',
     webContent: 'เนื้อหาเว็บไซต์',
+    article: 'บทความ',
     accessControl: 'ระบบควบคุมสิทธิ์',
     user: 'ผู้ใช้งาน',
     group: 'กลุ่ม',
     permission: 'สิทธิ์',
     profile: 'ข้อมูลผู้ใช้',
     accesscontrolUser: 'ผู้ใช้งาน',
+    accesscontrolGroup: 'กลุ่ม',
+    accesscontrolPermission: 'สิทธิ์',
     utility: 'เครื่องมือพิเศษ'
   },
   pageLogin: {
@@ -149,6 +157,37 @@ export default {
     words: 'คำ',
     lineControlPanel: 'จัดการบรรทัด'
   },
+  pageCommonReference: {
+    createItem: 'สร้าง',
+    editItem: 'ปรับปรุง',
+    upward: 'เลื่อนขึ้น',
+    downward: 'เลื่อนลง',
+    changeParent: 'เปลี่ยนกลุ่ม',
+    unselectItem: 'ยกเลิกการเลือก',
+    deleteItem: 'ลบ',
+    openTipitaka: 'เปิดพระไตรปิฎก',
+    tipitakaEdtion: 'ฉบับพระไตรปิฎก',
+    volume: 'เล่มที่',
+    volumes: 'เล่ม',
+    page: 'หน้าที่',
+    pages: 'หน้า',
+    imageScan: 'ภาพสแกน',
+    imageWordList: 'รายการคำตามหน้าสแกน',
+    referenceWordList: 'รายการคำตามข้อมูลอ้างอิง',
+    tocWordList: 'รายการคำตามสารบัญ',
+    noRecordFound: 'ไม่พบข้อมูล',
+    wordRange: 'ช่วงเนื้อหา',
+    volumeNumber: 'เล่มที่',
+    pageNumber: 'หน้าที่',
+    noSubcontents: 'ไม่พบสารบัญย่อย',
+    topic: 'ชื่อหัวเรื่อง',
+    commonReference: 'อ้างอิงร่วม',
+    showReference: 'แสดงข้อมูลอ้างอิง',
+    addToReference: 'เพิ่มลงข้อมูลอ้างอิง',
+    foundReferenceData: 'พบว่ามีข้อมูลอ้างอิง',
+    notUnderAnotherTopic: 'ไม่อยู่ภายใต้หัวข้ออื่น',
+    updateItem: 'ปรับปรุง'
+  },
   pageCommonToc: {
     createNode: 'สร้าง',
     editNode: 'ปรับปรุง',
@@ -177,7 +216,7 @@ export default {
     addToReference: 'เพิ่มลงข้อมูลอ้างอิง',
     foundReferenceData: 'พบว่ามีข้อมูลอ้างอิง'
   },
-  pageTocSet: {
+  pageTcrSet: {
     sequence: 'ลำดับ',
     name: 'ชื่อ',
     description: 'รายละเอียด',
@@ -190,18 +229,31 @@ export default {
     content: 'เนื้อความ',
     status: 'สถานะ',
     draft: 'ฉบับร่าง',
-    published: 'ฉบับเผยแพร่'
+    published: 'ฉบับเผยแพร่',
+    publishOn: 'วันที่เผยแพร่'
+  },
+  pageArticle: {
+    sequence: 'ลำดับ',
+    title: 'เรื่อง',
+    taxonomy: 'กลุ่ม',
+    body: 'เนื้อความ',
+    publishedOn: 'วันที่เผยแพร่'
   },
   pageAccessControl: {
     email: 'อีเมล',
     firstName: 'ชื่อ',
-    lastName: 'นามสกุล'
+    lastName: 'นามสกุล',
+    role: 'บทบาท',
+    permission: 'สิทธิ์',
+    description: 'รายละเอียด',
+    userList: 'รายการบัญชีผู้ใช้',
+    permissionList: 'รายการสิทธิ์'
   },
   meritBook: {
     createToc: 'สร้างสารบัญ',
     updateRecord: 'ปรับปรุงข้อมูล',
     deleteRecord: 'ลบข้อมูล',
-    createWordlist: 'พิสูจน์อักษรและสร้างคลังคำบาลี',
+    createWordList: 'พิสูจน์อักษรและสร้างคลังคำบาลี',
     tipitakaEdition: 'พระไตรปิฎก ฉบับ',
     volumeNumber: 'เล่มที่',
     pageNumber: 'หน้าที่'

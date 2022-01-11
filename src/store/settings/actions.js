@@ -94,7 +94,7 @@ export function createPreservationMenu ({ rootState, commit }) {
 export function createCommonReferenceMenu ({ rootState, commit }, payload) {
   const result = []
   if (rootState.auth.loggedIn) {
-    db.collection('tocSet')
+    db.collection('tcrSet')
       .orderBy('sequence', 'asc')
       .get()
       .then(querySnapshot => {
@@ -106,17 +106,17 @@ export function createCommonReferenceMenu ({ rootState, commit }, payload) {
           title: true,
           loggedIn: true,
           userEmailVerified: true,
-          havePermission: 'common-toc'
+          havePermission: 'common-reference'
         })
         querySnapshot.forEach((doc) => {
           result.push({
             icon: 'remove',
             label: doc.data().name,
             caption: doc.data().description,
-            to: '/common-toc/' + doc.id,
+            to: '/common-reference/' + doc.id,
             loggedIn: true,
             userEmailVerified: true,
-            havePermission: 'common-toc'
+            havePermission: 'common-reference'
           })
         })
         commit('setCommonReferenceMenu', result)
@@ -153,8 +153,8 @@ export function createConfigurationMenu ({ commit }, payload) {
     },
     {
       icon: 'account_tree',
-      label: 'mainNavigation.tocSet',
-      to: '/configuration/toc-set',
+      label: 'mainNavigation.tcrSet',
+      to: '/configuration/tcr-set',
       class: 'text-black',
       loggedIn: true,
       userEmailVerified: true,
@@ -164,6 +164,15 @@ export function createConfigurationMenu ({ commit }, payload) {
       icon: 'wysiwyg',
       label: 'mainNavigation.webContent',
       to: '/configuration/web-content',
+      class: 'text-black',
+      loggedIn: true,
+      userEmailVerified: true,
+      havePermission: 'configuration'
+    },
+    {
+      icon: 'post_add',
+      label: 'mainNavigation.article',
+      to: '/configuration/article',
       class: 'text-black',
       loggedIn: true,
       userEmailVerified: true,

@@ -20,20 +20,20 @@
 
     <q-card-section>
       <q-list>
-        <q-item v-for="i in list" :key=i.id>
+        <q-item v-for="i in list" :key=i.docId>
           <q-item-section>
             <q-item-label>{{ $t(`meritBook.${i.action}`) }}</q-item-label>
             <q-item-label style="font-size: 0.8em;" caption lines="2">
               <div style="line-height: 1.6em;" v-if="i.collection == 'tipitaka'">
                 {{ $t('meritBook.tipitakaEdition') }}
-                  {{ find(tipitakaEdition, ['id', i.document.tipitakaEdition])['name'] }}<br>
+                  {{ find(tipitakaEdition, ['docId', i.document.tipitakaEdition])['name'] }}<br>
                   {{ $t('meritBook.volumeNumber') }} {{ i.document.volumeNumber }}
-                  {{ find(find(tipitakaEdition, ['id', i.document.tipitakaEdition])['volume'], ['number', i.document.volumeNumber])['name'] }},
+                  {{ find(find(tipitakaEdition, ['docId', i.document.tipitakaEdition])['volume'], ['number', i.document.volumeNumber])['name'] }},
                   {{ $t('meritBook.pageNumber') }} {{ i.document.pageNumber }}
               </div>
               <div v-if="i.collection == 'commonToc'">
                 {{ i.document.label }}<br>
-                {{ find(tocSet, ['id', i.document.tocSetId])['name'] }} {{ find(tocSet, ['id', i.document.tocSetId])['description'] }}
+                {{ find(tcrSet, ['docId', i.document.tcrSetId])['name'] }} {{ find(tcrSet, ['docId', i.document.tcrSetId])['description'] }}
               </div>
               <div v-else>
               </div>
@@ -55,6 +55,7 @@ import { ref, computed, watch } from 'vue'
 import { useStore } from 'vuex'
 import { db } from 'src/boot/firebase.js'
 import { find } from 'lodash'
+import { getPromiseDocs } from 'src/functions/manage-data.js'
 
 export default {
 
@@ -68,35 +69,28 @@ export default {
     // variables
     const list = ref([])
     const tipitakaEdition = ref([])
-    const tocSet = ref([])
+    const tcrSet = ref([])
     const limit = ref(30)
+    // MeritBook
+    const meritBook = db.collection('meritBook')
+      .where('userID', '==', userID.value)
+      .orderBy('createdOn', 'desc')
+      .limit(limit.value)
 
     // function
-    // get MeritBook
-    function getMeritBook () {
-      return db.collection('meritBook')
-        .where('userID', '==', userID.value)
-        .orderBy('createdOn', 'desc')
-        .limit(limit.value)
-        .get()
-    }
     // getMeritRec
     async function getMeritRec () {
       // get tipitakaEdition
-      const tipitakaEditionDocs = await db.collection('tipitakaEdition').get()
-      tipitakaEdition.value = tipitakaEditionDocs.empty ? [] : tipitakaEditionDocs.docs.map(doc => doc.data())
-      // get tocSet
-      const tocSetDocs = await db.collection('tocSet').get()
-      tocSet.value = tocSetDocs.empty ? [] : tocSetDocs.docs.map(doc => doc.data())
+      tipitakaEdition.value = await getPromiseDocs(db.collection('tipitakaEdition'))
+      // get tcrSet
+      tcrSet.value = getPromiseDocs(db.collection('tcrSet'))
       // get meritBook
-      const meritBookDocs = await getMeritBook()
-      list.value = meritBookDocs.empty ? [] : meritBookDocs.docs.map(doc => doc.data())
+      list.value = await getPromiseDocs(meritBook)
     }
     getMeritRec()
 
     watch(limit, async function () {
-      const meritBookDocs = await getMeritBook()
-      list.value = meritBookDocs.empty ? [] : meritBookDocs.docs.map(doc => doc.data())
+      list.value = await getPromiseDocs(meritBook)
     })
 
     return {
@@ -104,7 +98,7 @@ export default {
       list,
       limit,
       tipitakaEdition,
-      tocSet
+      tcrSet
     }
   }
 }

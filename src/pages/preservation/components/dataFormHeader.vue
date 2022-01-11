@@ -80,7 +80,7 @@ export default {
       let result = false
       const firstList = _.head(datatable.value.querySnapshot)
       if (datatable.value.selectedRow) {
-        if (datatable.value.selectedRow.id === firstList.id) {
+        if (datatable.value.selectedRow.docId === firstList.docId) {
           result = true
         }
       }
@@ -92,9 +92,7 @@ export default {
       let result = false
       const lastList = _.last(datatable.value.querySnapshot)
       if (datatable.value.selectedRow) {
-        if (datatable.value.selectedRow.id === lastList.id) {
-          // console.log(lastList.id)
-          // console.log(datatable.value.selectedRow.id)
+        if (datatable.value.selectedRow.docId === lastList.docId) {
           result = true
         }
       }
@@ -147,7 +145,7 @@ export default {
     async function submitThenCloseForm () {
       console.log('submitThenCloseForm')
       const data = datatable.value.updateData
-      const doc = db.collection('tipitaka').doc(data.id)
+      const doc = db.collection('tipitaka').doc(data.docId)
       await updateDoc(doc, data)
         .then(() => {
           $q.notify({

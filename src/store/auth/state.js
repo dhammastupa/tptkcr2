@@ -16,6 +16,6 @@ export default function () {
       group: [],
       permission: []
     },
-    defaultGroup: 'staff'
+    defaultGroup: 'volunteer'
   }
 }

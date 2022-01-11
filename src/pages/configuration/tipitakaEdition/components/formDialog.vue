@@ -7,14 +7,15 @@
     transition-hide="slide-right"
   >
     <q-card class="card-dialog-500">
-      <q-banner inline-actions
+      <q-banner
+        inline-actions
         :class="{
           'text-white': true,
-          'bg-primary': action==='update',
-          'bg-secondary': action==='add'
-        }">
-
-        <q-icon v-if="action==='add'" name="add" size="sm" />
+          'bg-primary': action === 'update',
+          'bg-secondary': action === 'add',
+        }"
+      >
+        <q-icon v-if="action === 'add'" name="add" size="sm" />
         <q-icon v-else name="drive_file_rename_outline" size="sm" />
 
         {{ $t($options.name) }}
@@ -37,16 +38,20 @@
             :label="$t('pageTipitakaEdition.sequence')"
             type="number"
             lazy-rules
-            :rules="[ val => val && val.length > 0 || $t('system.requiredField')]"
+            :rules="[
+              (val) => (val && val.length > 0) || $t('system.requiredField'),
+            ]"
           />
 
           <q-input
             filled
-            :readonly="action==='update'"
+            :readonly="action === 'update'"
             v-model="form.code"
             :label="$t('pageTipitakaEdition.code')"
             lazy-rules
-            :rules="[ val => val && val.length > 0 || $t('system.requiredField')]"
+            :rules="[
+              (val) => (val && val.length > 0) || $t('system.requiredField'),
+            ]"
           />
 
           <q-input
@@ -54,7 +59,9 @@
             v-model="form.name"
             :label="$t('pageTipitakaEdition.name')"
             lazy-rules
-            :rules="[ val => val && val.length > 0 || $t('system.requiredField')]"
+            :rules="[
+              (val) => (val && val.length > 0) || $t('system.requiredField'),
+            ]"
           />
 
           <q-editor
@@ -69,10 +76,10 @@
             v-model="form.yearOfPublication"
             :label="$t('pageTipitakaEdition.yearOfPublication')"
             lazy-rules
-            :rules="[ val => val && val.length > 0 || $t('system.notValid')]"
+            :rules="[(val) => (val && val.length > 0) || $t('system.notValid')]"
           >
             <template v-slot:hint>
-              {{ $t('pageTipitakaEdition.buddhistEra') }}
+              {{ $t("pageTipitakaEdition.buddhistEra") }}
             </template>
           </q-input>
 
@@ -84,7 +91,9 @@
             emit-value
             map-options
             lazy-rules
-            :rules="[ val => val && val.length > 0 || $t('system.requiredField')]"
+            :rules="[
+              (val) => (val && val.length > 0) || $t('system.requiredField'),
+            ]"
           />
 
           <q-select
@@ -95,7 +104,9 @@
             emit-value
             map-options
             lazy-rules
-            :rules="[ val => val && val.length > 0 || $t('system.requiredField')]"
+            :rules="[
+              (val) => (val && val.length > 0) || $t('system.requiredField'),
+            ]"
           />
 
           <q-input
@@ -107,46 +118,63 @@
 
           <q-card class="my-card">
             <q-card-section class="bg-grey-2">
-              <div class="text-h6">{{ $t('pageTipitakaEdition.volume') }}</div>
+              <div class="text-h6">{{ $t("pageTipitakaEdition.volume") }}</div>
             </q-card-section>
 
             <q-card-section v-for="(v, index) in opt.volume" :key="index">
               <div class="rounded-borders">
                 <div class="q-gutter-md row items-start">
                   <q-input
-                    filled dense
+                    filled
+                    dense
                     style="width: 150px"
                     type="number"
                     v-model="v.number"
                     :label="$t('pageTipitakaEdition.number')"
                     lazy-rules
-                    :rules="[ val => val && val.length > 0 || $t('system.requiredField')]"
+                    :rules="[
+                      (val) =>
+                        (val && val.length > 0) || $t('system.requiredField'),
+                    ]"
                   />
                   <q-input
-                    filled dense
+                    filled
+                    dense
                     style="width: 150px"
                     type="number"
                     v-model="v.totalPages"
                     :label="$t('pageTipitakaEdition.totalPages')"
                     lazy-rules
-                    :rules="[ val => val && val.length > 0 || $t('system.requiredField')]"
+                    :rules="[
+                      (val) =>
+                        (val && val.length > 0) || $t('system.requiredField'),
+                    ]"
                   />
                 </div>
                 <q-input
-                  filled dense
+                  filled
+                  dense
                   v-model="v.name"
                   :label="$t('pageTipitakaEdition.name')"
                   lazy-rules
-                  :rules="[ val => val && val.length > 0 || $t('system.requiredField')]"
+                  :rules="[
+                    (val) =>
+                      (val && val.length > 0) || $t('system.requiredField'),
+                  ]"
                 />
               </div>
-
             </q-card-section>
 
             <q-separator />
 
             <q-card-actions align="right">
-              <q-btn @click="onAddVolume" flat round color="primary" icon="add" />
+              <q-btn
+                @click="onAddVolume"
+                flat
+                round
+                color="primary"
+                icon="add"
+              />
             </q-card-actions>
           </q-card>
 
@@ -155,7 +183,9 @@
             filled
             :label="$t('pageTipitakaEdition.publisher')"
             lazy-rules
-            :rules="[ val => val && val.length > 0 || $t('system.requiredField')]"
+            :rules="[
+              (val) => (val && val.length > 0) || $t('system.requiredField'),
+            ]"
           />
 
           <q-select
@@ -166,11 +196,17 @@
             emit-value
             map-options
             lazy-rules
-            :rules="[ val => val && val.length > 0 || $t('system.requiredField')]"
+            :rules="[
+              (val) => (val && val.length > 0) || $t('system.requiredField'),
+            ]"
           />
           <q-field
-            v-if="action==='add'" disable
-            filled :label="$t('system.createdOn')" stack-label>
+            v-if="action === 'add'"
+            disable
+            filled
+            :label="$t('system.createdOn')"
+            stack-label
+          >
             <template v-slot:control>
               <div class="self-center full-width no-outline" tabindex="0">
                 {{ $filters.timeStampToDate(form.createdOn) }}
@@ -178,16 +214,23 @@
             </template>
           </q-field>
           <q-input
-            v-if="action==='add'" disable
+            v-if="action === 'add'"
+            disable
             v-model="form.createdBy"
             filled
             :label="$t('system.createdBy')"
             lazy-rules
-            :rules="[ val => val && val.length > 0 || $t('system.requiredField')]"
+            :rules="[
+              (val) => (val && val.length > 0) || $t('system.requiredField'),
+            ]"
           />
           <q-field
-            v-if="action==='update'" disable
-            filled :label="$t('system.updatedOn')" stack-label>
+            v-if="action === 'update'"
+            disable
+            filled
+            :label="$t('system.updatedOn')"
+            stack-label
+          >
             <template v-slot:control>
               <div class="self-center full-width no-outline" tabindex="0">
                 {{ $filters.timeStampToDate(form.updatedOn) }}
@@ -195,35 +238,36 @@
             </template>
           </q-field>
           <q-input
-            v-if="action==='update'" disable
+            v-if="action === 'update'"
+            disable
             v-model="form.updatedBy"
             filled
             :label="$t('system.updatedBy')"
             lazy-rules
-            :rules="[ val => val && val.length > 0 || $t('system.requiredField')]"
+            :rules="[
+              (val) => (val && val.length > 0) || $t('system.requiredField'),
+            ]"
           />
           <div align="right">
             <q-checkbox
-              v-if="action==='update'"
+              v-if="action === 'update'"
               v-model="deleteAction"
               :label="$t('system.checkToDelete')"
               class="q-pr-lg"
-              color="red" keep-color
+              color="red"
+              keep-color
             />
 
             <!-- submit btn -->
-            <q-btn
-              :label="$t('system.submit')"
-              type="submit"
-              color="primary"
-            />
+            <q-btn :label="$t('system.submit')" type="submit" color="primary" />
 
             <!-- reset btn -->
             <q-btn
-              v-if="action==='add'"
+              v-if="action === 'add'"
               :label="$t('system.reset')"
               type="reset"
-              color="primary" flat
+              color="primary"
+              flat
               class="q-ml-sm"
             />
           </div>
@@ -244,15 +288,14 @@ import useCrudForm from 'src/hooks/crud.js'
 export default {
   name: 'mainNavigation.tipitakaEdition',
 
-  props: [
-    'formAction'
-  ],
+  props: ['formAction'],
 
   setup (props, context) {
     // composable
     const $t = useI18n().t
     const $q = useQuasar()
-    const { dialog, action, document, form, formRef, deleteAction, userName } = useCrudForm()
+    const { dialog, action, document, form, formRef, deleteAction, userName } =
+      useCrudForm()
 
     // optons variables
     const opt = reactive({
@@ -319,17 +362,21 @@ export default {
       ]
     })
 
-    watch(props, function () {
-      dialog.value = props.formAction.openDialog
-      action.value = props.formAction.action
-      document.value = props.formAction.document
-      // check form action
-      if (action.value === 'add') {
-        initialForm()
-      } else if (action.value === 'update') {
-        openForm(document.value)
-      }
-    }, { immediate: true })
+    watch(
+      props,
+      function () {
+        dialog.value = props.formAction.openDialog
+        action.value = props.formAction.action
+        document.value = props.formAction.document
+        // check form action
+        if (action.value === 'add') {
+          initialForm()
+        } else if (action.value === 'update') {
+          openForm(document.value)
+        }
+      },
+      { immediate: true }
+    )
 
     // function initialForm
     function initialForm () {
@@ -388,13 +435,15 @@ export default {
       form.value.volume = opt.volume
       form.value.updatedOn = Timestamp.now()
       form.value.updatedBy = userName.value
-      formRef.value.validate().then(success => {
+      formRef.value.validate().then((success) => {
         if (success) {
           // create
           if (action.value === 'add') {
-            const newDoc = db.collection('tipitakaEdition').doc(form.value.code)
+            const newDoc = db
+              .collection('tipitakaEdition')
+              .doc(form.value.code)
             const newDocId = newDoc.id
-            const data = { ...{ id: newDocId }, ...form.value }
+            const data = { ...{ docId: newDocId }, ...form.value }
             createDoc(newDoc, { ...data })
               .then(() => {
                 $q.notify({
@@ -413,9 +462,9 @@ export default {
                 })
                 console.log(error.code)
               })
-          // update
+            // update
           } else if (action.value === 'update') {
-            const doc = db.collection('tipitakaEdition').doc(form.value.id)
+            const doc = db.collection('tipitakaEdition').doc(form.value.docId)
             // in case want to delete document
             if (deleteAction.value === true) {
               $q.dialog({
@@ -423,27 +472,31 @@ export default {
                 message: $t('system.confirmToDelete'),
                 cancel: true,
                 persistent: true
-              }).onOk(() => {
-                deleteDoc(doc)
-                  .then(() => {
-                    deleteAction.value = false
-                    dialog.value = false
-                  })
-                  .catch((error) => {
-                    $q.notify({
-                      icon: 'error',
-                      color: 'negative',
-                      message: $t('system.error')
-                    })
-                    console.log(error)
-                  })
-              }).onOk(() => {
-                console.log('>>>> second OK catcher')
-              }).onCancel(() => {
-                console.log('>>>> Cancel')
-              }).onDismiss(() => {
-                console.log('I am triggered on both OK and Cancel')
               })
+                .onOk(() => {
+                  deleteDoc(doc)
+                    .then(() => {
+                      deleteAction.value = false
+                      dialog.value = false
+                    })
+                    .catch((error) => {
+                      $q.notify({
+                        icon: 'error',
+                        color: 'negative',
+                        message: $t('system.error')
+                      })
+                      console.log(error)
+                    })
+                })
+                .onOk(() => {
+                  console.log('>>>> second OK catcher')
+                })
+                .onCancel(() => {
+                  console.log('>>>> Cancel')
+                })
+                .onDismiss(() => {
+                  console.log('I am triggered on both OK and Cancel')
+                })
             } else {
               // update document
               updateDoc(doc, { ...form.value })

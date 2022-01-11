@@ -35,7 +35,7 @@
       <div class="q-gutter">
         <!-- ปุ่มเปลี่ยนภาพ -->
         <q-btn
-          v-if="hasPermission('tipitaka-deleteAction')"
+          v-if="useHasPermission('tipitaka-deleteAction')"
           flat round
           icon="upload_file"
           @click="replaceImageRef = !replaceImageRef"
@@ -87,6 +87,7 @@
 import { useStore } from 'vuex'
 import { ref, computed } from 'vue'
 import QFirebaseUploader from 'src/pages/preservation/components/firebaseUploader.vue'
+import useHasPermission from 'src/hooks/has-permission.js'
 
 export default {
   components: {
@@ -114,11 +115,6 @@ export default {
       )
     }
 
-    // function for check permission
-    function hasPermission (rqPermission) {
-      return $store.dispatch('auth/hasPermission', rqPermission)
-    }
-
     // replaceImageRef
     const replaceImageRef = ref(false)
 
@@ -137,8 +133,8 @@ export default {
       form,
       replaceImageRef,
       setRulerActive,
-      hasPermission,
-      getImageInfo
+      getImageInfo,
+      useHasPermission
     }
   }
 }

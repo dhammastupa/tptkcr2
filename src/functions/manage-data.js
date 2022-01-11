@@ -1,23 +1,31 @@
 import { ref } from 'vue'
 
-export const getDoc = async (collection, id) => {
+export const getPromiseDoc = async (collection, docId) => {
   return new Promise((resolve, reject) => {
-    collection.doc(id).get().then((doc) => {
-      const result = doc.exists ? doc.data() : null
+    collection.doc(docId).get().then((doc) => {
+      const result = doc.exists ? { ...doc.data() } : null
       return resolve(result)
     })
   })
 }
 
-export const getDocs = async (query) => {
-  const docs = await query.get()
-  return docs.empty ? [] : docs.docs.map(doc => doc.data())
-}
-
 export const getPromiseDocs = (query) => {
   return new Promise((resolve, reject) => {
-    query.get().then((docs) => {
-      const result = docs.docs.map(doc => doc.data())
+    query.get().then((data) => {
+      const result = data.docs.map(doc => { return { ...doc.data() } })
+      return resolve(result)
+    })
+  })
+}
+
+export const getPaginateDocs = (query) => {
+  return new Promise((resolve, reject) => {
+    query.get().then((data) => {
+      const lastRow = data.docs[data.docs.length - 1]
+      const result = {
+        rows: data.docs.map(doc => { return { ...doc.data() } }),
+        lastRow
+      }
       return resolve(result)
     })
   })

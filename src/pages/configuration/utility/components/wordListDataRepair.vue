@@ -1,12 +1,12 @@
 <template>
   <q-card class="my-card bg-deep-purple-1">
     <q-card-section>
-      <div class="text-h6">รีเซ็ตข้อมูล wordList</div>
+      <div class="text-h6">รีเซ็ตข้อมูล WordList</div>
     </q-card-section>
 
     <q-card-section>
-      ทำการสร้าง wordList ขึ้นใหม่
-      โดยทำการแก้ไขปรับเอา wordList ว่าง ออก
+      ทำการสร้าง WordList ขึ้นใหม่
+      โดยทำการแก้ไขปรับเอา WordList ว่าง ออก
       และปรับเอาเครื่องหมาย [] รวมถึงเลขข้อออก
     </q-card-section>
 
@@ -39,7 +39,7 @@ export default {
 
   setup (props, context) {
     // =============================
-    // wordList Data Repair
+    // WordList Data Repair
     // =============================
 
     // variables
@@ -55,7 +55,7 @@ export default {
       '41', '42', '43', '44', '45'
     ])
 
-    // function wordListDataRepair2
+    // function wordListDataRepair
     async function wordListDataRepair () {
       context.emit('playSound')
       // get proofread from tipitaka
@@ -67,22 +67,22 @@ export default {
         .get()
       // main process
       context.emit('updateLog', `Get all proofread: ${proofread.size} docs`)
-      // 1: delete wordList
+      // 1: delete WordList
       for (const prDoc of proofread.docs) {
-        const wordList = await db.collection('wordList')
+        const WordList = await db.collection('wordList')
           .where('tipitakaRecordId', '==', prDoc.id)
           .get()
-        let chunckNum = 0
-        const wlDocChunks = chunk(wordList.docs, 500)
+        // let chunckNum = 0
+        const wlDocChunks = chunk(WordList.docs, 500)
         for (const wlDocs of wlDocChunks) {
-          chunckNum++
-          console.log('wl chunck : ' + chunckNum)
+          // chunckNum++
+          // console.log('wl chunck : ' + chunckNum)
           const batchDelete = db.batch()
           for (const wlDoc of wlDocs) {
-            batchDelete.delete(db.collection('wordList').doc(wlDoc.id))
+            batchDelete.delete(db.collection('wordList').doc(wlDoc.docId))
           }
           await batchDelete.commit()
-          context.emit('updateLog', `Remove wordList / V.${prDoc.data().volumeNumber} P.${prDoc.data().pageNumber}`)
+          context.emit('updateLog', `Remove WordList / V.${prDoc.data().volumeNumber} P.${prDoc.data().pageNumber}`)
         }
         // 2.0: prepare text
         const textTrimmed = prDoc.data().text.replace(/^\s*$(?:\r\n?|\n)/gm, '')
@@ -96,7 +96,7 @@ export default {
         await db.collection('tipitaka').doc(prDoc.id)
           .update({ text: text })
         context.emit('updateLog', `Clean & Updated Text / V.${prDoc.data().volumeNumber} P.${prDoc.data().pageNumber}`)
-        // 3: create wordList
+        // 3: create WordList
         const batchCreate = db.batch()
         const lines = text.split('\n')
         let wordNumber = 0
@@ -116,18 +116,18 @@ export default {
                 wordNumber++
                 batchCreate.set(
                   db.collection('wordList').doc(newDoc.id), {
-                    id: newDoc.id,
+                    docId: newDoc.id,
                     word: word,
                     lineNumber: lineNumber,
                     wordNumber: wordNumber,
                     // reference
-                    tipitakaReference: db.collection('tipitaka').doc(`${prDoc.id}`),
+                    // tipitakaReference: db.collection('tipitaka').doc(`${prDoc.docId}`),
                     tipitakaRecordId: prDoc.id,
                     tipitakaEdition: prDoc.data().tipitakaEdition,
                     volumeNumber: prDoc.data().volumeNumber,
                     pageNumber: prDoc.data().pageNumber,
                     imageReference: prDoc.data().imageReference,
-                    wordIndex: `${'sya'}-${pad('1', 3)}-${pad(prDoc.data().pageNumber, 4)}-${pad(wordNumber, 3)}`,
+                    wordIndex: `${'sya'}-${pad(prDoc.data().volumeNumber, 3)}-${pad(prDoc.data().pageNumber, 4)}-${pad(wordNumber, 3)}`,
                     reference: reference
                   }
                 )
@@ -137,7 +137,7 @@ export default {
           })
         })
         await batchCreate.commit()
-        context.emit('updateLog', `Create wordList / V.${prDoc.data().volumeNumber} P. ${prDoc.data().pageNumber}`)
+        context.emit('updateLog', `Create WordList / V.${prDoc.data().volumeNumber} P. ${prDoc.data().pageNumber}`)
         context.emit('updateLog', '=======================')
       }
 

@@ -72,7 +72,7 @@
       </div>
 
       <div class="col-xs-12 col-sm-12 col-md-6">
-        <generate-link></generate-link>
+        <generate-link v-if="useHasPermission('invitation')"></generate-link>
 
         <user-group></user-group>
 
@@ -94,6 +94,7 @@ import { db, Timestamp } from 'src/boot/firebase.js'
 import { updateDoc } from 'src/functions/manage-data'
 import { useQuasar } from 'quasar'
 import { useI18n } from 'vue-i18n'
+import useHasPermission from 'src/hooks/has-permission.js'
 
 export default {
   name: 'mainNavigation.profile',
@@ -155,7 +156,7 @@ export default {
       form.value.updatedBy = userName.value
       formRef.value.validate().then(success => {
         if (success) {
-          const doc = db.collection('user').doc(form.value.id)
+          const doc = db.collection('user').doc(form.value.docId)
           // update document
           updateDoc(doc, { ...form.value })
             .then(() => {
@@ -182,7 +183,8 @@ export default {
       form,
       authInfo,
       authPermission,
-      submit
+      submit,
+      useHasPermission
     }
   }
 }

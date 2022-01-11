@@ -1,7 +1,7 @@
 <template>
   <div>
     <q-table
-      row-key="id"
+      row-key="docId"
       :grid="$q.screen.xs"
       :title="$t($options.name)"
       :rows="datatable.rows"

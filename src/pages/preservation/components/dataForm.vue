@@ -96,15 +96,10 @@ export default {
 
     const splitterModel = ref(50)
 
-    function hasPermission (rqPermission) {
-      return $store.dispatch('auth/hasPermission', rqPermission)
-    }
-
     return {
       splitterModel,
       form,
-      datatable,
-      hasPermission
+      datatable
     }
   }
 }

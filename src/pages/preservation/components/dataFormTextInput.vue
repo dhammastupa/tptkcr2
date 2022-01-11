@@ -145,6 +145,7 @@
 
     <q-splitter
       v-model="splitterModel"
+      disable
       unit="px"
     >
       <!-- lineNumber -->
@@ -202,7 +203,7 @@
 import _ from 'lodash'
 import { useStore } from 'vuex'
 import { db, storage, Timestamp } from 'src/boot/firebase.js'
-import { updateDoc, deleteDoc } from 'src/functions/manage-data.js'
+import { updateDoc, deleteDoc, getPromiseDocs } from 'src/functions/manage-data.js'
 import { ref, computed, watch } from 'vue'
 import { useQuasar, format } from 'quasar'
 import { useI18n } from 'vue-i18n'
@@ -399,7 +400,7 @@ export default {
     }
 
     // -----------------------------------------------
-    // $$ function proofread create/delete wordList $$
+    // $$ function proofread create/delete WordList $$
     // -----------------------------------------------
     function proofread (value, evt) {
       removeExtraSpace()
@@ -419,17 +420,17 @@ export default {
         }
       }).onOk(() => {
         if (value) {
-          // create wordlist & // logging
+          // create WordList & // logging
           createWordList()
           useLogMeritMaking(
             'tipitaka',
             selectedRow.value,
-            'createWordlist',
+            'createWordList',
             userID.value,
             userName.value
           )
         } else {
-          // remvoe wordlist & // logging
+          // remvoe WordList & // logging
           removeWordList()
           useLogMeritMaking(
             'tipitaka',
@@ -471,13 +472,13 @@ export default {
                 wordNumber++
                 batch.set(
                   db.collection('wordList').doc(newDoc.id), {
-                    id: newDoc.id,
+                    docId: newDoc.id,
                     word: word,
                     lineNumber: lineNumber,
                     wordNumber: wordNumber,
                     // reference
-                    tipitakaReference: db.collection('tipitaka').doc(`${selectedRow.value.id}`),
-                    tipitakaRecordId: selectedRow.value.id,
+                    // tipitakaReference: db.collection('tipitaka').doc(`${selectedRow.value.docId}`),
+                    tipitakaRecordId: selectedRow.value.docId,
                     tipitakaEdition: selectedRow.value.tipitakaEdition,
                     volumeNumber: selectedRow.value.volumeNumber,
                     pageNumber: selectedRow.value.pageNumber,
@@ -500,20 +501,18 @@ export default {
     // ------------------------
     // function remove WordList
     // ------------------------
-    function removeWordList () {
-      console.log('removeWordList', selectedRow.value.id)
+    async function removeWordList () {
+      console.log('removeWordList', selectedRow.value.docId)
       const batch = db.batch()
-      db.collection('wordList')
-        .where('tipitakaRecordId', '==', selectedRow.value.id)
-        .get()
-        .then(docs => {
-          docs.forEach((doc) => {
-            batch.delete(db.collection('wordList').doc(doc.id))
-          })
-          batch.commit().then(() => {
-            console.log('commited')
-          })
-        })
+      const docs = await getPromiseDocs(db.collection('wordList')
+        .where('tipitakaRecordId', '==', selectedRow.value.docId)
+      )
+      docs.forEach((doc) => {
+        batch.delete(db.collection('wordList').doc(doc.docId))
+      })
+      batch.commit().then(() => {
+        console.log('commited')
+      })
     }
 
     // ----------------------------
@@ -538,7 +537,7 @@ export default {
             console.log(error.code)
           })
         // delete record
-        const doc = db.collection('tipitaka').doc(selectedRow.value.id)
+        const doc = db.collection('tipitaka').doc(selectedRow.value.docId)
         deleteDoc(doc)
           .then(() => {
             $q.notify({
@@ -602,7 +601,7 @@ export default {
         })
       }
       data.value = {
-        id: selectedRow.value.id,
+        docId: selectedRow.value.docId,
         text: textRef.value,
         note: noteRef.value,
         proofread: proofreadRef.value,
@@ -621,7 +620,7 @@ export default {
     // --------------------------
     function submit () {
       const data = datatable.value.updateData
-      const doc = db.collection('tipitaka').doc(data.id)
+      const doc = db.collection('tipitaka').doc(data.docId)
       updateDoc(doc, data)
         .then(() => {
           $q.notify({
@@ -653,7 +652,7 @@ export default {
     // ------------------------
     function softSubmit () {
       const data = datatable.value.updateData
-      const doc = db.collection('tipitaka').doc(data.id)
+      const doc = db.collection('tipitaka').doc(data.docId)
       updateDoc(doc, {
         personalSetting: data.personalSetting
       })

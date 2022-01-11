@@ -32,5 +32,11 @@
     "dist",
     ".quasar",
     "node_modules"
-  ]
+  ],
+  "emulators": {
+    "firestore": {
+      "host": "localhost",
+      "port": "4000"
+    }
+  }
 }
